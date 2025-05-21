@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실행계획 및 소요예산 | 부천 스마트 원스톱 플랫폼</title>
+    <meta name="description" content="부천시 규제개선 공모전 - 부천 스마트 원스톱 플랫폼의 실행계획 및 소요예산">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .animate-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 비교 슬라이더 관련 스타일 */
+        .comparison-slider {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+        .comparison-slider-before,
+        .comparison-slider-after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .comparison-slider-before {
+            z-index: 1;
+            clip-path: polygon(0 0, var(--position, 50%) 0, var(--position, 50%) 100%, 0 100%);
+        }
+        .comparison-slider-divider {
+            position: absolute;
+            top: 0;
+            left: var(--position, 50%);
+            bottom: 0;
+            width: 4px;
+            background: #fff;
+            z-index: 3;
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+        .comparison-slider-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .comparison-slider-divider::after {
+            content: '⟷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            color: #667eea;
+            font-size: 20px;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+        
+        /* 숫자 카운터 애니메이션 관련 스타일 */
+        .counter-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .counter-digit {
+            display: inline-block;
+            perspective: 1000px;
+        }
+        .counter-digit span {
+            display: inline-block;
+            height: 1em;
+            backface-visibility: hidden;
+            animation: countUp 2s ease-in-out forwards;
+            transform-origin: bottom;
+        }
+        @keyframes countUp {
+            from {
+                transform: rotateX(-90deg);
+                opacity: 0;
+            }
+            to {
+                transform: rotateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* 시각적 그래프 커스텀 스타일 */
+        .chart-container {
+            position: relative;
+        }
+        .chart-label {
+            position: absolute;
+            font-size: 12px;
+            color: #6b7280;
+            pointer-events: none;
+        }
+        
+        /* 이펙트 */
+        .effect-card {
+            transition: all 0.4s ease;
+        }
+        .effect-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            transition: width 1.5s ease;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img src="img/logo.png" alt="부천시 로고" class="h-8 mr-2">
+                        <a href="index.html" class="text-xl font-bold text-gradient">부천 스마트 원스톱</a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">홈</a>
+                    <a href="about.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">문제인식</a>
+                    <a href="solution.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">솔루션</a>
+                    <a href="expected-benefits.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">기대효과</a>
+                    <a href="benchmarking.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">벤치마킹</a>
+                    <a href="demo.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">AI 챗봇 체험</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">홈</a>
+                <a href="about.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">문제인식</a>
+                <a href="solution.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">솔루션</a>
+                <a href="expected-benefits.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">기대효과</a>
+                <a href="benchmarking.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">벤치마킹</a>
+                <a href="demo.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">AI 챗봇 체험</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16 gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">스마트 원스톱 <span class="bg-white text-blue-600 px-2">실행계획</span></h1>
+            <p class="text-xl max-w-3xl mx-auto opacity-90">
+                차별화된 단계별 추진 전략과 체계적인 예산 계획으로 성공적인 플랫폼 구축
+            </p>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 단계별 추진 전략 -->
+            <section class="mb-20 animate-in" id="implementation-strategy">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">단계별 <span class="text-gradient">추진 전략</span></h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        부천 스마트 원스톱 플랫폼의 체계적인 구축을 위한 3단계 추진 전략
+                    </p>
+                </div>
+                
+                <!-- 단계 타임라인 -->
+                <div class="relative">
+                    <!-- 타임라인 선 -->
+                    <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-blue-200"></div>
+                    
+                    <!-- 1단계 -->
+                    <div class="md:flex md:items-center mb-16 relative">
+                        <div class="md:w-1/2 md:pr-12 text-center md:text-right">
+                            <div class="bg-white p-6 rounded-xl shadow-md inline-block">
+                                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-4">1-6개월</span>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">1단계: 시스템 구축</h3>
+                                <div class="text-left">
+                                    <div class="mb-4">
+                                        <h4 class="font-bold text-blue-600 mb-2">인프라 구축</h4>
+                                        <ul class="text-gray-600 space-y-1 pl-5 list-disc">
+                                            <li>클라우드 기반 통합 플랫폼 아키텍처 설계</li>
+                                            <li>기존 행정시스템 연계 인터페이스 개발</li>
+                                            <li>데이터 표준화 및 통합 데이터베이스 구축</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h4 class="font-bold text-blue-600 mb-2">AI 챗봇 개발</h4>
+                                        <ul class="text-gray-600 space-y-1 pl-5 list-disc">
+                                            <li>부천시 특화 AI 학습모델 개발</li>
+                                            <li>민원 빅데이터 수집 및 정제</li>
+                                            <li>초기 서비스 시나리오 설계 및 테스트</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-blue-600 mb-2">모바일 앱 개발</h4>
+                                        <ul class="text-gray-600 space-y-1 pl-5 list-disc">
+                                            <li>UI/UX 설계 및 프로토타입 개발</li>
+                                            <li>핵심 기능 우선 구현</li>
+                                            <li>사용자 테스트 및 피드백 수집</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold">1</div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <div class="effect-card bg-blue-50 p-6 rounded-xl shadow-md border-l-4 border-blue-500">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                        <i class="fas fa-server text-blue-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-blue-800">인프라 및 기초 시스템 구축</h4>
+                                        <p class="text-sm text-gray-600">플랫폼의 기반 시스템 개발 단계</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-4">
+                                    시스템 구축 단계에서는 통합 플랫폼의 토대를 마련합니다. 클라우드 기반 인프라를 구축하고, 부천시 특화 AI 챗봇을 개발하며, 사용자 중심의 모바일 앱을 설계합니다. 기존 행정 시스템과의 연계 인터페이스를 개발하여 데이터의 원활한 흐름을 보장합니다.
+                                </p>
+                                <div class="flex items-center text-sm">
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded font-medium mr-2">핵심 목표</span>
+                                    <span class="text-gray-700">인프라 구축과 핵심 기능 개발 완료</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 2단계 -->
+                    <div class="md:flex md:items-center mb-16 relative">
+                        <div class="md:w-1/2 md:pr-12">
+                            <div class="effect-card bg-purple-50 p-6 rounded-xl shadow-md border-l-4 border-purple-500">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                                        <i class="fas fa-flask text-purple-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-purple-800">시범 서비스 운영 및 개선</h4>
+                                        <p class="text-sm text-gray-600">시스템 안정화 및 개선 단계</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-4">
+                                    시범 운영 단계에서는 원미구를 대상으로 한정된 서비스를 제공하며 시스템을 안정화합니다. 실제 사용 환경에서 발생하는 문제점을 식별하고 개선하여 서비스의 품질을 향상시킵니다. 시민 참여형 모니터링을 통해 사용자 경험을 최적화합니다.
+                                </p>
+                                <div class="flex items-center text-sm">
+                                    <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded font-medium mr-2">핵심 목표</span>
+                                    <span class="text-gray-700">서비스 안정화 및 사용자 피드백 기반 개선</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-purple-500 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold">2</div>
+                        <div class="md:w-1/2 md:pl-12 text-center md:text-left">
+                            <div class="bg-white p-6 rounded-xl shadow-md inline-block">
+                                <span class="inline-block px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm font-medium mb-4">7-9개월</span>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">2단계: 시범 운영</h3>
+                                <div class="text-left">
+                                    <div class="mb-4">
+                                        <h4 class="font-bold text-purple-600 mb-2">1개 구 대상 시범 서비스</h4>
+                                        <ul class="text-gray-600 space-y-1 pl-5 list-disc">
+                                            <li>원미구를 대상으로 시범 서비스 실시</li>
+                                            <li>고빈도 민원 10종 우선 적용</li>
+                                            <li>시민 모니터단 구성 및 운영</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h4 class="font-bold text-purple-600 mb-2">모니터링 및 개선</h4>
+                                        <ul class="text-gray-600 space-y-1 pl-5 list-disc">
+                                            <li>실시간 서비스 로그 분석</li>
+                                            <li>사용자 경험 데이터 수집</li>
+                                            <li>개선점 도출 및 시스템 보완</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-purple-600 mb-2">홍보 및 교육</h4>
+                                        <ul class="text-gray-600 space-y-1 pl-5 list-disc">
+                                            <li>시민 대상 서비스 인지도 제고 활동</li>
+                                            <li>공무원 대상 시스템 활용 교육</li>
+                                            <li>키오스크 등 오프라인 안내 강화</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 3단계 -->
+                    <div class="md:flex md:items-center relative">
+                        <div class="md:w-1/2 md:pr-12 text-center md:text-right">
+                            <div class="bg-white p-6 rounded-xl shadow-md inline-block">
+                                <span class="inline-block px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-medium mb-4">10-12개월</span>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-2">3단계: 전면 확대</h3>
+                                <div class="text-left">
+                                    <div class="mb-4">
+                                        <h4 class="font-bold text-green-600 mb-2">전 구 서비스 확대</h4>
+                                        <ul class="text-gray-600 space-y-1 pl-5 list-disc">
+                                            <li>소사구, 오정구로 서비스 확대</li>
+                                            <li>모든 민원유형으로 서비스 범위 확대</li>
+                                            <li>3구 통합 운영체계 구축</li>
+                                        </ul>
+                                    </div>
+                                    <div class="mb-4">
+                                        <h4 class="font-bold text-green-600 mb-2">고도화 및 연계 확대</h4>
+                                        <ul class="text-gray-600 space-y-1 pl-5 list-disc">
+                                            <li>생체인증, 블록체인 등 첨단기술 도입</li>
+                                            <li>중앙정부 시스템 연계 확대</li>
+                                            <li>민간서비스 연계 인터페이스 개발</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-green-600 mb-2">지속가능 운영체계 구축</h4>
+                                        <ul class="text-gray-600 space-y-1 pl-5 list-disc">
+                                            <li>자체 유지보수 역량 강화</li>
+                                            <li>시민참여형 지속개발 체계 구축</li>
+                                            <li>데이터 기반 서비스 개선 자동화</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 rounded-full w-8 h-8 flex items-center justify-center text-white font-bold">3</div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <div class="effect-card bg-green-50 p-6 rounded-xl shadow-md border-l-4 border-green-500">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                        <i class="fas fa-expand-alt text-green-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-green-800">전면 확대 및 고도화</h4>
+                                        <p class="text-sm text-gray-600">서비스 확장 및 지속가능 체계 구축</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-4">
+                                    전면 확대 단계에서는 3개 구 전체로 서비스를 확장하고, 모든 민원 유형을 포괄하는 완전한 원스톱 서비스를 구현합니다. 최신 기술을 도입하여 시스템을 고도화하고, 지속가능한 운영 체계를 구축하여 장기적인 서비스 품질을 보장합니다.
+                                </p>
+                                <div class="flex items-center text-sm">
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded font-medium mr-2">핵심 목표</span>
+                                    <span class="text-gray-700">전체 구로 확대 및 지속가능 운영체계 확립</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 소요 예산 -->
+            <section class="mb-20 animate-in" id="budget">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">소요 <span class="text-gradient">예산</span></h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        총 18억원의 효율적인 예산 계획으로 최대 효과 창출
+                    </p>
+                </div>
+                
+                <!-- 예산 요약 -->
+                <div class="bg-white p-8 rounded-xl shadow-md mb-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                        <div class="text-center md:text-left mb-6 md:mb-0">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">예산 총액</h3>
+                            <div class="text-4xl font-bold text-blue-600">18억원</div>
+                            <p class="text-gray-600 mt-2">효율적인 예산 배분으로 최대 효과 창출</p>
+                        </div>
+                        <div class="w-full md:w-1/3">
+                            <canvas id="budgetPieChart" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- 개발 비용 -->
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <span class="w-4 h-4 bg-blue-500 rounded-sm mr-2"></span>
+                                시스템 개발 비용: 13억원
+                            </h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-700 font-medium">AI 챗봇 개발</span>
+                                        <span class="text-blue-600 font-medium">6억원</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 46%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        AI 학습모델(3억원), 데이터 수집/정제(2억원), 챗봇 인터페이스(1억원)
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-700 font-medium">기존 시스템 연계</span>
+                                        <span class="text-blue-600 font-medium">4억원</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 31%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        API 개발(1.5억원), 데이터 통합(1.5억원), 보안시스템(1억원)
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-700 font-medium">모바일 앱 개발</span>
+                                        <span class="text-blue-600 font-medium">3억원</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 23%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        UI/UX 설계(0.8억원), 앱 개발(1.7억원), 성능 최적화(0.5억원)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 운영 비용 -->
+                        <div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <span class="w-4 h-4 bg-purple-500 rounded-sm mr-2"></span>
+                                운영 비용: 5억원
+                            </h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-700 font-medium">시범 운영</span>
+                                        <span class="text-purple-600 font-medium">1억원</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 20%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        시범 서비스(0.5억원), 모니터링(0.3억원), 피드백 관리(0.2억원)
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-700 font-medium">개선 및 고도화</span>
+                                        <span class="text-purple-600 font-medium">1억원</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 20%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        성능 개선(0.5억원), 기능 추가 개발(0.5억원)
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-700 font-medium">교육 및 홍보</span>
+                                        <span class="text-purple-600 font-medium">1억원</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 20%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        시민 홍보(0.5억원), 공무원 교육(0.3억원), 홍보물(0.2억원)
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-700 font-medium">유지보수</span>
+                                        <span class="text-purple-600 font-medium">2억원</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 40%"></div>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        시스템 유지보수(1억원), 운영 인력(0.8억원), 서버(0.2억원)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 추진 조직 및 협력 체계 -->
+                <div class="bg-blue-50 p-8 rounded-xl border border-blue-200">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">추진 조직 및 협력 체계</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- 전담 조직 구성 -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-users-cog text-blue-600"></i>
+                                </div>
+                                <h4 class="text-lg font-bold text-gray-800">전담 조직 구성</h4>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2">•</span>
+                                    <span><span class="font-medium">스마트시티 추진단</span>: 총괄 기획 및 사업 관리</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2">•</span>
+                                    <span><span class="font-medium">디지털전환팀</span>: 시스템 개발 및 기술 구현</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2">•</span>
+                                    <span><span class="font-medium">민원혁신팀</span>: 행정 프로세스 재설계</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2">•</span>
+                                    <span><span class="font-medium">시민소통팀</span>: 시민 의견 수렴 및 홍보</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- 협력 네트워크 -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-network-wired text-green-600"></i>
+                                </div>
+                                <h4 class="text-lg font-bold text-gray-800">협력 네트워크</h4>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-2">•</span>
+                                    <span><span class="font-medium">중앙정부</span>: 행안부, 과기정통부 협력</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-2">•</span>
+                                    <span><span class="font-medium">전문기관</span>: 한국지능정보사회진흥원 등</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-2">•</span>
+                                    <span><span class="font-medium">민간기업</span>: AI, 클라우드 기업 파트너십</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-green-500 mr-2">•</span>
+                                    <span><span class="font-medium">시민단체</span>: 테스트 및 의견 수렴 협력</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- 거버넌스 체계 -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-sitemap text-purple-600"></i>
+                                </div>
+                                <h4 class="text-lg font-bold text-gray-800">거버넌스 체계</h4>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start">
+                                    <span class="text-purple-500 mr-2">•</span>
+                                    <span><span class="font-medium">추진위원회</span>: 부시장 주재, 월 1회 점검</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-500 mr-2">•</span>
+                                    <span><span class="font-medium">실무협의체</span>: 주 1회 운영회의</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-500 mr-2">•</span>
+                                    <span><span class="font-medium">시민참여단</span>: 서비스 테스트, 피드백</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-500 mr-2">•</span>
+                                    <span><span class="font-medium">전문가 자문단</span>: IT, 행정 전문가 구성</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 기대 효과 -->
+            <section class="mb-12 animate-in" id="expected-effects">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">투자 <span class="text-gradient">대비 효과</span></h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        18억원 투자로 연간 27억원 이상의 경제적 효과 창출
+                    </p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-md">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- 정량적 효과 -->
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-600 mb-6 flex items-center">
+                                <i class="fas fa-chart-line mr-2"></i>정량적 효과
+                            </h3>
+                            
+                            <div class="space-y-6">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h4 class="font-bold text-gray-800 mb-2">민원처리 효율성 증대</h4>
+                                    <ul class="space-y-2 text-gray-700">
+                                        <li class="flex items-center">
+                                            <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+                                            <span>민원 처리시간 <span class="font-medium text-blue-600">70% 단축</span>: 평균 3일 → 1일</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+                                            <span>구청 방문 <span class="font-medium text-blue-600">50% 감소</span>: 온라인 완결율 40% → 70%</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+                                            <span>서류 제출 건수 <span class="font-medium text-blue-600">80% 감소</span>: 행정정보 공동이용 확대</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <h4 class="font-bold text-gray-800 mb-2">경제적 효과 (연간)</h4>
+                                    <ul class="space-y-2 text-gray-700">
+                                        <li class="flex items-center">
+                                            <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                                            <span>시민 시간비용 <span class="font-medium text-green-600">15억원 절감</span></span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                                            <span>행정비용 <span class="font-medium text-green-600">12억원 절감</span></span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                                            <span>총 경제적 효과 <span class="font-medium text-green-600">27억원/년</span></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="bg-purple-50 p-4 rounded-lg">
+                                    <h4 class="font-bold text-gray-800 mb-2">서비스 품질 향상</h4>
+                                    <ul class="space-y-2 text-gray-700">
+                                        <li class="flex items-center">
+                                            <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                                            <span>민원 만족도 <span class="font-medium text-purple-600">85% → 95%</span> 향상</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                                            <span>처리 오류 <span class="font-medium text-purple-600">80% 감소</span>: AI 기반 자동화</span>
+                                        </li>
+                                        <li class="flex items-center">
+                                            <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                                            <span>민원 재신청률 <span class="font-medium text-purple-600">70% 감소</span>: 한 번에 정확한 처리</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ROI 차트 및 정성적 효과 -->
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-600 mb-6 flex items-center">
+                                <i class="fas fa-chart-bar mr-2"></i>투자 회수 기간
+                            </h3>
+                            
+                            <div class="mb-6">
+                                <canvas id="roiChart" height="250"></canvas>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h4 class="font-bold text-gray-800 mb-2">정성적 효과</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="bg-white p-3 rounded shadow-sm">
+                                        <h5 class="font-medium text-blue-600 mb-1">시민 편의성 증대</h5>
+                                        <p class="text-sm text-gray-600">24시간 행정서비스 가능, 불필요한 방문 해소, 맞춤형 서비스</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded shadow-sm">
+                                        <h5 class="font-medium text-green-600 mb-1">행정 역량 강화</h5>
+                                        <p class="text-sm text-gray-600">고부가가치 업무 집중, 데이터 기반 의사결정, 부서 간 협업 증진</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded shadow-sm">
+                                        <h5 class="font-medium text-purple-600 mb-1">도시 경쟁력 제고</h5>
+                                        <p class="text-sm text-gray-600">혁신 행정 브랜드 이미지, 디지털 포용행정, 시민 일체감 조성</p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded shadow-sm">
+                                        <h5 class="font-medium text-yellow-600 mb-1">지속가능성 확보</h5>
+                                        <p class="text-sm text-gray-600">장기적 운영 기반 마련, 시민 주도 개선 체계, 디지털 역량 강화</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 추가 자료 안내 -->
+            <section class="animate-in" id="additional-resources">
+                <div class="bg-gray-100 p-8 rounded-xl border border-gray-200">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">추가 자료 안내</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h4 class="text-lg font-bold text-gray-800 mb-4">첨부 자료 목록</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-center text-gray-700">
+                                    <i class="fas fa-file-pdf text-red-500 mr-3"></i>
+                                    <span>부천 스마트 원스톱 플랫폼 세부설계서</span>
+                                </li>
+                                <li class="flex items-center text-gray-700">
+                                    <i class="fas fa-sitemap text-blue-500 mr-3"></i>
+                                    <span>시스템 아키텍처 다이어그램</span>
+                                </li>
+                                <li class="flex items-center text-gray-700">
+                                    <i class="fas fa-project-diagram text-green-500 mr-3"></i>
+                                    <span>서비스 프로세스 맵</span>
+                                </li>
+                                <li class="flex items-center text-gray-700">
+                                    <i class="fas fa-chart-line text-purple-500 mr-3"></i>
+                                    <span>경제성 분석 보고서</span>
+                                </li>
+                                <li class="flex items-center text-gray-700">
+                                    <i class="fas fa-comments text-yellow-500 mr-3"></i>
+                                    <span>AI 챗봇 '부비' 서비스 시나리오</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <h4 class="text-lg font-bold text-gray-800 mb-4">자료 요청 방법</h4>
+                            <p class="text-gray-700 mb-4">
+                                상세 첨부자료는 다음의 방법으로 요청하실 수 있습니다.
+                            </p>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">
+                                        <span class="font-bold text-blue-600">1</span>
+                                    </div>
+                                    <p class="text-gray-700">부천시 정책기획과(☏ 032-625-2216)로 전화 문의</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">
+                                        <span class="font-bold text-blue-600">2</span>
+                                    </div>
+                                    <p class="text-gray-700">이메일 <span class="text-blue-600">bucheon@korea.kr</span>로 자료 요청</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">
+                                        <span class="font-bold text-blue-600">3</span>
+                                    </div>
+                                    <p class="text-gray-700">부천시청 홈페이지 자료실에서 열람 가능</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- CTA 섹션 -->
+    <section class="bg-gray-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <div class="p-10 flex flex-col justify-center">
+                        <div class="text-sm font-semibold text-blue-600 uppercase mb-2">더 자세히 알아보기</div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">부천 스마트 원스톱 플랫폼의 솔루션 살펴보기</h2>
+                        <p class="text-gray-600 mb-6">
+                            부천시민의 행정 경험을 획기적으로 개선할 혁신적인 솔루션에 대해 더 알아보세요.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="solution.html" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                <i class="fas fa-lightbulb mr-2"></i>솔루션 살펴보기
+                            </a>
+                            <a href="benchmarking.html" class="inline-flex items-center justify-center px-5 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                벤치마킹 사례 확인하기
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-10 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <div class="text-center">
+                            <h3 class="text-xl font-bold text-white mb-4">기대효과</h3>
+                            <div class="grid grid-cols-2 gap-6 text-white">
+                                <div>
+                                    <div class="text-4xl font-bold">70%</div>
+                                    <p class="text-white text-opacity-80">처리시간 단축</p>
+                                </div>
+                                <div>
+                                    <div class="text-4xl font-bold">27억</div>
+                                    <p class="text-white text-opacity-80">연간 절감 효과</p>
+                                </div>
+                                <div>
+                                    <div class="text-4xl font-bold">95%</div>
+                                    <p class="text-white text-opacity-80">민원 만족도</p>
+                                </div>
+                                <div>
+                                    <div class="text-4xl font-bold">8개월</div>
+                                    <p class="text-white text-opacity-80">투자 회수 기간</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-2xl font-bold mb-4">부천 스마트 원스톱 플랫폼</h3>
+            <p class="mb-6 text-gray-300">시민 중심의 편리한 행정, 디지털로 하나되는 부천</p>
+            <div class="space-x-4 mb-8">
+                <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="text-sm text-gray-400">© 2025 부천시 스마트 원스톱 플랫폼 제안. All Rights Reserved.</p>
+            <p class="text-xs text-gray-500 mt-2">본 웹사이트는 부천시 규제개선 공모전 제출용으로 제작되었습니다.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 모바일 메뉴 토글
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // 애니메이션 효과
+            const animateItems = document.querySelectorAll('.animate-in');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            };
+            
+            const animationObserver = new IntersectionObserver(observerCallback, observerOptions);
+            
+            animateItems.forEach(item => {
+                animationObserver.observe(item);
+            });
+            
+            // 예산 파이 차트
+            const budgetPieCtx = document.getElementById('budgetPieChart');
+            if (budgetPieCtx) {
+                new Chart(budgetPieCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['시스템 개발 비용', '운영 비용'],
+                        datasets: [{
+                            data: [13, 5],
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.7)',
+                                'rgba(139, 92, 246, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(139, 92, 246, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.label + ': ' + context.raw + '억원';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // ROI 차트
+            const roiCtx = document.getElementById('roiChart');
+            if (roiCtx) {
+                new Chart(roiCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['초기 투자', '1년차', '2년차', '3년차'],
+                        datasets: [
+                            {
+                                label: '누적 비용 (억원)',
+                                data: [18, 20, 22, 24],
+                                backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                                borderColor: 'rgba(239, 68, 68, 1)',
+                                borderWidth: 1,
+                                order: 2
+                            },
+                            {
+                                label: '누적 효과 (억원)',
+                                data: [0, 27, 54, 81],
+                                backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                                borderColor: 'rgba(16, 185, 129, 1)',
+                                borderWidth: 1,
+                                order: 1
+                            },
+                            {
+                                label: '순이익 (억원)',
+                                data: [-18, 7, 32, 57],
+                                type: 'line',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 2,
+                                pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                                fill: false,
+                                order: 0
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.raw + '억원';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                title: {
+                                    display: true,
+                                    text: '금액 (억원)'
+                                },
+                                grid: {
+                                    color: function(context) {
+                                        if (context.tick.value === 0) {
+                                            return 'rgba(0, 0, 0, 0.2)';
+                                        }
+                                        return 'rgba(0, 0, 0, 0.1)';
+                                    },
+                                    lineWidth: function(context) {
+                                        if (context.tick.value === 0) {
+                                            return 2;
+                                        }
+                                        return 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
