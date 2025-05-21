@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문제인식 및 제안 개요 | 부천 스마트 원스톱 플랫폼</title>
+    <meta name="description" content="부천시 규제개선 공모전 - 부천시 행정환경의 문제점과 스마트 원스톱 플랫폼의 핵심 제안">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .animate-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 비교 슬라이더 관련 스타일 */
+        .comparison-slider {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+        .comparison-slider-before,
+        .comparison-slider-after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .comparison-slider-before {
+            z-index: 1;
+            clip-path: polygon(0 0, var(--position, 50%) 0, var(--position, 50%) 100%, 0 100%);
+        }
+        .comparison-slider-divider {
+            position: absolute;
+            top: 0;
+            left: var(--position, 50%);
+            bottom: 0;
+            width: 4px;
+            background: #fff;
+            z-index: 3;
+            cursor: ew-resize;
+            transform: translateX(-50%);
+        }
+        .comparison-slider-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .comparison-slider-divider::after {
+            content: '⟷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            color: #667eea;
+            font-size: 20px;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+        
+        /* 숫자 카운터 애니메이션 관련 스타일 */
+        .counter-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .counter-digit {
+            display: inline-block;
+            perspective: 1000px;
+        }
+        .counter-digit span {
+            display: inline-block;
+            height: 1em;
+            backface-visibility: hidden;
+            animation: countUp 2s ease-in-out forwards;
+            transform-origin: bottom;
+        }
+        @keyframes countUp {
+            from {
+                transform: rotateX(-90deg);
+                opacity: 0;
+            }
+            to {
+                transform: rotateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* 시각적 그래프 커스텀 스타일 */
+        .chart-container {
+            position: relative;
+        }
+        .chart-label {
+            position: absolute;
+            font-size: 12px;
+            color: #6b7280;
+            pointer-events: none;
+        }
+        
+        /* 이펙트 */
+        .effect-card {
+            transition: all 0.4s ease;
+        }
+        .effect-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            transition: width 1.5s ease;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img src="img/logo.png" alt="부천시 로고" class="h-8 mr-2">
+                        <a href="index.html" class="text-xl font-bold text-gradient">부천 스마트 원스톱</a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">홈</a>
+                    <a href="about.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">문제인식</a>
+                    <a href="solution.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">솔루션</a>
+                    <a href="expected-benefits.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">기대효과</a>
+                    <a href="benchmarking.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">벤치마킹</a>
+                    <a href="demo.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">AI 챗봇 체험</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">홈</a>
+                <a href="about.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">문제인식</a>
+                <a href="solution.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">솔루션</a>
+                <a href="expected-benefits.html" clase="block px-3 py-2 text-gray-700 hover:text-blue-600">기대효과</a>
+                <a href="benchmarking.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">벤치마킹</a>
+                <a href="demo.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">AI 챗봇 체험</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16 gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">부천시 <span class="bg-white text-blue-600 px-2">문제인식</span></h1>
+            <p class="text-xl max-w-3xl mx-auto opacity-90">
+                3구 체제와 초고밀도 도시 환경에서 발생하는 행정서비스의 한계와 개선 방향
+            </p>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 부천시 행정환경 현황 -->
+            <section class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">부천시 <span class="text-gradient">행정환경 현황</span></h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        인구밀도 전국 1위의 초고밀도 도시와 3구 행정체제의 특징
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- 통계 1: 인구 -->
+                    <div class="effect-card bg-white p-8 rounded-xl shadow-md text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-users text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">인구</h3>
+                        <div class="flex justify-center items-center space-x-2 text-2xl font-bold text-blue-600 mb-2">
+                            <span class="counter" data-target="768000">0</span>
+                            <span>명</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                            경기도 내 인구 밀집도 상위 도시(2024년 기준)
+                        </p>
+                        <div class="mt-4 w-full bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar bg-blue-600 h-2 rounded-full" style="width: 0%;" data-width="80%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 통계 2: 인구밀도 -->
+                    <div class="effect-card bg-white p-8 rounded-xl shadow-md text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-chart-area text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">인구밀도</h3>
+                        <div class="flex justify-center items-center space-x-2 text-2xl font-bold text-green-600 mb-2">
+                            <span class="counter" data-target="14472">0</span>
+                            <span>명/km²</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                            전국 1위, 서울 평균보다 1.5배 높은 초고밀도 도시
+                        </p>
+                        <div class="mt-4 w-full bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar bg-green-600 h-2 rounded-full" style="width: 0%;" data-width="95%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 통계 3: 연간 민원 -->
+                    <div class="effect-card bg-white p-8 rounded-xl shadow-md text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-file-alt text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">연간 민원</h3>
+                        <div class="flex justify-center items-center space-x-2 text-2xl font-bold text-purple-600 mb-2">
+                            <span class="counter" data-target="240">0</span>
+                            <span>만건</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                            하루 평균 6,500건의 민원이 발생하는 밀집된 행정수요
+                        </p>
+                        <div class="mt-4 w-full bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar bg-purple-600 h-2 rounded-full" style="width: 0%;" data-width="85%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 통계 4: 행정구조 -->
+                    <div class="effect-card bg-white p-8 rounded-xl shadow-md text-center">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-sitemap text-yellow-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">행정구조</h3>
+                        <div class="flex justify-center items-center space-x-2 text-2xl font-bold text-yellow-600 mb-2">
+                            <span class="counter" data-target="3">0</span>
+                            <span>구</span>
+                            <span class="counter" data-target="37">0</span>
+                            <span>동</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">
+                            원미구, 소사구, 오정구의 3구 체제 행정 운영(2021년 복귀)
+                        </p>
+                        <div class="mt-4 w-full bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar bg-yellow-600 h-2 rounded-full" style="width: 0%;" data-width="70%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 간략 정보그래픽 -->
+                <div class="mt-12 p-6 bg-blue-50 rounded-xl border border-blue-100">
+                    <div class="text-center mb-6">
+                        <span class="inline-block px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                            <i class="fas fa-info-circle mr-1"></i>부천시 개요
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="flex items-center bg-white p-4 rounded-lg shadow-sm">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">면적</p>
+                                <p class="font-bold text-gray-800">53.44km²</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center bg-white p-4 rounded-lg shadow-sm">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                                <i class="fas fa-city"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">행정구역</p>
+                                <p class="font-bold text-gray-800">3구 37개동</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center bg-white p-4 rounded-lg shadow-sm">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">재정규모</p>
+                                <p class="font-bold text-gray-800">2.1조원 (2024)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center bg-white p-4 rounded-lg shadow-sm">
+                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mr-4">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">공무원</p>
+                                <p class="font-bold text-gray-800">2,850명</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 현장 사례 스토리텔링 -->
+            <section class="mb-20 animate-in" id="case-studies">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        <i class="fas fa-user-clock text-red-600 mr-2"></i>현장에서 들려오는 이야기
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        부천시민들이 일상에서 겪는 구체적인 행정 불편 사례를 살펴보세요
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- 사례 1: 전입신고 -->
+                    <div class="case-card bg-red-50 p-6 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-home text-red-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">전입신고의 어려움</h4>
+                                <p class="text-sm text-gray-600">A씨 (35세, 직장인)</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">1</span>
+                                <p class="text-sm">어느 구청에 가야 할지 헷갈림</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">2</span>
+                                <p class="text-sm">잘못된 구청 방문 후 재이동</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">3</span>
+                                <p class="text-sm">2시간 대기 + 다음날 재방문</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <span class="inline-block px-3 py-1 bg-red-200 text-red-800 text-sm font-semibold rounded-full">
+                                총 소요: 2일
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 사례 2: 사업자 등록 -->
+                    <div class="case-card bg-orange-50 p-6 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-store text-orange-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">사업자 등록의 복잡함</h4>
+                                <p class="text-sm text-gray-600">B씨 (42세, 예비창업자)</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-orange-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">1</span>
+                                <p class="text-sm">구청 영업신고</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-orange-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">2</span>
+                                <p class="text-sm">세무서 사업자등록</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-orange-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">3</span>
+                                <p class="text-sm">근로복지공단 4대보험</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-orange-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">4</span>
+                                <p class="text-sm">구청 위생교육 신청</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <span class="inline-block px-3 py-1 bg-orange-200 text-orange-800 text-sm font-semibold rounded-full">
+                                총 소요: 2주
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 사례 3: 복지서비스 -->
+                    <div class="case-card bg-purple-50 p-6 rounded-lg border-l-4 border-purple-500">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-heart text-purple-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">복지서비스 이용의 단절</h4>
+                                <p class="text-sm text-gray-600">C씨 (75세, 어르신)</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-purple-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">1</span>
+                                <p class="text-sm">복지관 방문 (기초연금)</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-purple-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">2</span>
+                                <p class="text-sm">동주민센터 방문</p>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="inline-block w-6 h-6 bg-purple-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-1">3</span>
+                                <p class="text-sm">구청 방문 (노인일자리)</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <span class="inline-block px-3 py-1 bg-purple-200 text-purple-800 text-sm font-semibold rounded-full">
+                                가족 도움 필수
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 공감 버튼 -->
+                <div class="text-center mt-12">
+                    <button id="empathy-btn" class="px-8 py-4 bg-gradient-to-r from-red-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <i class="fas fa-hand-holding-heart mr-2"></i>
+                        나도 이런 불편을 겪었어요
+                        <span id="empathy-count" class="ml-2 px-2 py-1 bg-white text-purple-600 rounded-full text-sm font-bold">247</span>
+                    </button>
+                </div>
+            </section>
+            
+            <!-- 세부 분석 차트 -->
+            <section class="mb-20 animate-in" id="detailed-analysis">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        <i class="fas fa-chart-line text-blue-600 mr-2"></i>부천시 행정 분석
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        민원 처리 현황과 시민 불만 분석을 통해 문제점을 데이터로 확인하세요
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 차트 1: 민원 처리 현황 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">민원 처리 현황</h3>
+                        <div class="h-80 relative">
+                            <canvas id="processChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-500 text-center">
+                            * 전입신고, 사업자등록 등 다자연계 민원의 처리시간 장기화
+                        </div>
+                    </div>
+                    
+                    <!-- 차트 2: 시민 불만 요인 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">시민 불만 요인</h3>
+                        <div class="h-80 relative">
+                            <canvas id="complaintChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-500 text-center">
+                            * 2023년 부천시민 520명 행정서비스 만족도 조사 결과
+                        </div>
+                    </div>
+                    
+                    <!-- 차트 3: 구청별 업무 처리량 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">구청별 업무 처리량</h3>
+                        <div class="h-80 relative">
+                            <canvas id="districtWorkloadChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-500 text-center">
+                            * 구청별 업무 편중으로 인한 대기시간 차이 발생
+                        </div>
+                    </div>
+                    
+                    <!-- 차트 4: 디지털 접근성 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">디지털 접근성</h3>
+                        <div class="h-80 relative">
+                            <canvas id="digitalAccessChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-500 text-center">
+                            * 연령별 디지털 서비스 이용률 조사(2023년 기준)
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 3구 체제 문제점 -->
+            <section class="mb-20 animate-in" id="district-problems">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i>3구 체제의 문제점
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        3구 체제는 지역 특성에 맞는 행정이 가능하지만, 통합 관리의 어려움도 존재합니다
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 구청 간 비교 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">구청별 민원처리 비교</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">구청</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">1일 평균 민원</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">평균 대기시간</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">직원 1인당 업무량</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="font-medium text-gray-900">원미구청</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900">2,800건</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900">72분</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900">28.5건/일</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="font-medium text-gray-900">소사구청</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900">2,100건</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900">52분</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900">22.3건/일</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="font-medium text-gray-900">오정구청</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900">1,600건</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900">45분</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-gray-900">18.2건/일</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">구청별 운영 문제점</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-red-50 rounded-lg">
+                                <h4 class="font-medium text-red-800 mb-2">높은 운영비용</h4>
+                                <p class="text-sm text-gray-600">3개 구청 독립 운영으로 인한 중복 비용 발생, 연간 약 12억원의 추가 비용 소요</p>
+                            </div>
+                            <div class="p-4 bg-orange-50 rounded-lg">
+                                <h4 class="font-medium text-orange-800 mb-2">안내 정보 불일치</h4>
+                                <p class="text-sm text-gray-600">구청별 서로 다른 안내 정보로 인한 시민 혼란, 같은 민원도 구청별 처리 방식 상이</p>
+                            </div>
+                            <div class="p-4 bg-yellow-50 rounded-lg">
+                                <h4 class="font-medium text-yellow-800 mb-2">업무 연계 어려움</h4>
+                                <p class="text-sm text-gray-600">다부서 연계 업무에서 구청 간 정보 교류 부족, 일관성 있는 민원처리 어려움</p>
+                            </div>
+                            <div class="p-4 bg-green-50 rounded-lg">
+                                <h4 class="font-medium text-green-800 mb-2">서비스 품질 격차</h4>
+                                <p class="text-sm text-gray-600">구청별 서비스 품질과 대기시간의 차이로 인한 민원 불만 증가</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 주요 문제점 요약 -->
+            <section class="animate-in" id="key-problems">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        <i class="fas fa-search-minus text-red-600 mr-2"></i>핵심 문제점 진단
+                    </h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        부천시 행정서비스의 주요 문제점은 크게 세 가지 관점에서 분석됩니다
+                    </p>
+                </div>
+                
+                <div class="bg-red-50 p-8 rounded-lg border-l-4 border-red-500">
+                    <h3 class="text-2xl font-bold text-red-800 mb-6">핵심 문제점 요약</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="problem-point text-center">
+                            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-exclamation-triangle text-2xl text-red-600"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2">구조적 문제</h4>
+                            <p class="text-sm text-gray-700">3구 체제 복귀로 인한 혼란 가중<br>초고밀도로 인한 민원 집중</p>
+                        </div>
+                        <div class="problem-point text-center">
+                            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-sitemap text-2xl text-red-600"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2">프로세스 문제</h4>
+                            <p class="text-sm text-gray-700">부서 간 칸막이 현상<br>아날로그 행정 관행 고착</p>
+                        </div>
+                        <div class="problem-point text-center">
+                            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-cogs text-2xl text-red-600"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-2">기술 시스템 문제</h4>
+                            <p class="text-sm text-gray-700">디지털 인프라 부족<br>정보 제공 한계</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 문제점 세부 사항 -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- 구조적 문제 세부 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-red-500">
+                        <h4 class="font-bold text-lg text-red-700 mb-4">구조적 문제 세부 사항</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">3구 체제로 인한 행정 분산과 불균형</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">좁은 면적에 인구 과밀로 인한 과도한 민원 발생</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">행정 구역별 통합 관리 부재로 비효율 발생</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">구청별 업무량 불균형으로 인한 대기시간 격차</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-red-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">민원 업무의 공간적 분산으로 인한 시민 불편</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 프로세스 문제 세부 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-orange-500">
+                        <h4 class="font-bold text-lg text-orange-700 mb-4">프로세스 문제 세부 사항</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-orange-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">부서 간 데이터 공유 부족으로 중복 서류 제출 필요</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-orange-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">복잡한 행정 절차와 다단계 승인 구조</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-orange-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">실시간 업무 진행 상황 공유 체계 미비</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-orange-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">표준화되지 않은 민원처리 절차로 혼란 가중</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-orange-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">공공기관과 유관기관 연계 체계 미흡</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 기술 시스템 문제 세부 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-blue-500">
+                        <h4 class="font-bold text-lg text-blue-700 mb-4">기술 시스템 문제 세부 사항</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">레거시 시스템 의존도가 높아 신속 대응 어려움</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">온라인 서비스의 낮은 완결성 (40% 수준)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">모바일 최적화 부족으로 접근성 저하</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">사용자 맞춤형 정보 제공 역량 부족</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">•</span>
+                                <span class="text-gray-700 text-sm">디지털 취약계층을 위한 대안적 채널 부족</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- CTA 섹션 -->
+    <section class="bg-gray-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <div class="p-10 flex flex-col justify-center">
+                        <div class="text-sm font-semibold text-blue-600 uppercase mb-2">부천시 스마트 원스톱 플랫폼</div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">혁신적인 솔루션으로 문제 해결</h2>
+                        <p class="text-gray-600 mb-6">
+                            분석된 문제점을 해결하기 위한 부천시 스마트 원스톱 플랫폼의 혁신적인 솔루션을 확인하세요.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="solution.html" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                <i class="fas fa-lightbulb mr-2"></i>솔루션 살펴보기
+                            </a>
+                            <a href="expected-benefits.html" class="inline-flex items-center justify-center px-5 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                기대효과 확인하기
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-10 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <div class="text-center">
+                            <h3 class="text-xl font-bold text-white mb-4">주요 혁신 포인트</h3>
+                            <div class="grid grid-cols-2 gap-6 text-white">
+                                <div>
+                                    <div class="text-4xl font-bold">AI</div>
+                                    <p class="text-white text-opacity-80">맞춤 상담</p>
+                                </div>
+                                <div>
+                                    <div class="text-4xl font-bold">원스톱</div>
+                                    <p class="text-white text-opacity-80">민원 처리</p>
+                                </div>
+                                <div>
+                                    <div class="text-4xl font-bold">모바일</div>
+                                    <p class="text-white text-opacity-80">우선 접근</p>
+                                </div>
+                                <div>
+                                    <div class="text-4xl font-bold">3구</div>
+                                    <p class="text-white text-opacity-80">통합 관리</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-2xl font-bold mb-4">부천 스마트 원스톱 플랫폼</h3>
+            <p class="mb-6 text-gray-300">시민 중심의 편리한 행정, 디지털로 하나되는 부천</p>
+            <div class="space-x-4 mb-8">
+                <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="text-sm text-gray-400">© 2025 부천시 스마트 원스톱 플랫폼 제안. All Rights Reserved.</p>
+            <p class="text-xs text-gray-500 mt-2">본 웹사이트는 부천시 규제개선 공모전 제출용으로 제작되었습니다.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 모바일 메뉴 토글
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // 애니메이션 효과
+            const animateItems = document.querySelectorAll('.animate-in');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            };
+            
+            const animationObserver = new IntersectionObserver(observerCallback, observerOptions);
+            
+            animateItems.forEach(item => {
+                animationObserver.observe(item);
+            });
+            
+            // 카운터 애니메이션
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000; // 2초
+                const frameRate = 30; // 초당 프레임 수
+                const totalFrames = duration * frameRate / 1000;
+                let frame = 0;
+                
+                const easeOutQuad = t => t * (2 - t);
+                
+                const animate = () => {
+                    const progress = easeOutQuad(frame / totalFrames);
+                    const currentValue = Math.floor(progress * target);
+                    
+                    counter.textContent = currentValue;
+                    
+                    if (frame < totalFrames) {
+                        frame++;
+                        requestAnimationFrame(animate);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                // 요소가 화면에 보일 때 애니메이션 시작
+                const counterObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animate();
+                            counterObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.2 });
+                
+                counterObserver.observe(counter);
+            });
+            
+            // 프로그레스 바 애니메이션
+            const progressBars = document.querySelectorAll('.progress-bar');
+            
+            progressBars.forEach(bar => {
+                const targetWidth = bar.getAttribute('data-width');
+                
+                // 요소가 화면에 보일 때 애니메이션 시작
+                const progressObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setTimeout(() => {
+                                bar.style.width = targetWidth;
+                            }, 200);
+                            progressObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.2 });
+                
+                progressObserver.observe(bar);
+            });
+            
+            // 공감 버튼 효과
+            const empathyBtn = document.getElementById('empathy-btn');
+            const empathyCount = document.getElementById('empathy-count');
+            
+            if (empathyBtn && empathyCount) {
+                empathyBtn.addEventListener('click', function() {
+                    let count = parseInt(empathyCount.textContent);
+                    count++;
+                    empathyCount.textContent = count;
+                    
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                    
+                    const heart = document.createElement('span');
+                    heart.textContent = '❤️';
+                    heart.style.position = 'absolute';
+                    heart.style.left = Math.random() * 80 + 10 + '%';
+                    heart.style.top = '-10px';
+                    heart.style.fontSize = '20px';
+                    heart.style.animation = 'float-up 1s ease-out forwards';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.opacity = '1';
+                    
+                    this.style.position = 'relative';
+                    this.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 1000);
+                });
+            }
+            
+            // 차트 초기화
+            // 민원 처리 현황 차트
+            const processCtx = document.getElementById('processChart');
+            if (processCtx) {
+                new Chart(processCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['일반 민원', '인허가 민원', '복지 신청', '사업자 등록', '기타'],
+                        datasets: [
+                            {
+                                label: '평균 처리시간 (일)',
+                                data: [3, 14, 7, 12, 5],
+                                backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '처리시간 (일)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 시민 불만 요인 차트
+            const complaintCtx = document.getElementById('complaintChart');
+            if (complaintCtx) {
+                new Chart(complaintCtx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['대기시간 길음', '방문 횟수 많음', '절차 복잡함', '정보 부정확', '담당자 부재', '기타'],
+                        datasets: [{
+                            data: [35, 24, 18, 12, 8, 3],
+                            backgroundColor: [
+                                'rgba(239, 68, 68, 0.7)',
+                                'rgba(245, 158, 11, 0.7)',
+                                'rgba(139, 92, 246, 0.7)',
+                                'rgba(16, 185, 129, 0.7)',
+                                'rgba(59, 130, 246, 0.7)',
+                                'rgba(107, 114, 128, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(245, 158, 11, 1)',
+                                'rgba(139, 92, 246, 1)',
+                                'rgba(16, 185, 129, 1)',
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(107, 114, 128, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.label}: ${context.raw}%`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 구청별 업무 처리량 차트
+            const districtWorkloadCtx = document.getElementById('districtWorkloadChart');
+            if (districtWorkloadCtx) {
+                new Chart(districtWorkloadCtx.getContext('2d'), {
+                    type: 'radar',
+                    data: {
+                        labels: ['일반 민원', '인허가 민원', '복지 신청', '사업자 관련', '건축/부동산', '세금 관련'],
+                        datasets: [
+                            {
+                                label: '원미구청',
+                                data: [85, 75, 65, 80, 90, 70],
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 2,
+                                pointBackgroundColor: 'rgba(59, 130, 246, 1)'
+                            },
+                            {
+                                label: '소사구청',
+                                data: [70, 65, 80, 60, 50, 75],
+                                backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                                borderColor: 'rgba(139, 92, 246, 1)',
+                                borderWidth: 2,
+                                pointBackgroundColor: 'rgba(139, 92, 246, 1)'
+                            },
+                            {
+                                label: '오정구청',
+                                data: [55, 70, 90, 65, 45, 60],
+                                backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                                borderColor: 'rgba(16, 185, 129, 1)',
+                                borderWidth: 2,
+                                pointBackgroundColor: 'rgba(16, 185, 129, 1)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    display: true
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // 디지털 접근성 차트
+            const digitalAccessCtx = document.getElementById('digitalAccessChart');
+            if (digitalAccessCtx) {
+                new Chart(digitalAccessCtx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['10대', '20대', '30대', '40대', '50대', '60대', '70대 이상'],
+                        datasets: [{
+                            label: '디지털 서비스 이용률 (%)',
+                            data: [95, 92, 88, 75, 62, 45, 25],
+                            fill: true,
+                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            borderWidth: 2,
+                            tension: 0.2,
+                            pointBackgroundColor: 'rgba(16, 185, 129, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: '이용률 (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // float-up 애니메이션을 위한 스타일 추가
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float-up {
+                    0% {
+                        opacity: 1;
+                        transform: translateY(0px) scale(0.5);
+                    }
+                    100% {
+                        opacity: 0;
+                        transform: translateY(-60px) scale(1.2);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>

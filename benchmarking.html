@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>벤치마킹 및 차별성 | 부천 스마트 원스톱 플랫폼</title>
+    <meta name="description" content="부천시 규제개선 공모전 - 국내외 스마트 행정 사례 벤치마킹 및 부천시 고유 차별성">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .animate-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 슬라이더 관련 스타일 */
+        .slider-container {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slider-item {
+            flex: 0 0 100%;
+            transition: all 0.3s ease;
+        }
+        @media (min-width: 768px) {
+            .slider-item {
+                flex: 0 0 33.333%;
+            }
+        }
+        .slider-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin: 0 5px;
+            background-color: #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .slider-dot.active {
+            background-color: #3b82f6;
+            transform: scale(1.2);
+        }
+        
+        /* 레이더 차트 관련 스타일 */
+        .radar-chart-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        /* 비교 테이블 관련 스타일 */
+        .comparison-table th, .comparison-table td {
+            transition: background-color 0.3s ease;
+        }
+        .highlight-column {
+            background-color: rgba(219, 234, 254, 0.5);
+        }
+        .comparison-table tr:hover td {
+            background-color: rgba(243, 244, 246, 0.8);
+        }
+        
+        /* 북마크 탭 스타일 */
+        .bookmark-tab {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .bookmark-tab::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: transparent;
+            transition: background-color 0.3s ease;
+        }
+        .bookmark-tab.active::after {
+            background-color: #3b82f6;
+        }
+        
+        /* 애니메이션 스타일 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fadeInUp {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .animation-delay-100 {
+            animation-delay: 100ms;
+        }
+        .animation-delay-200 {
+            animation-delay: 200ms;
+        }
+        .animation-delay-300 {
+            animation-delay: 300ms;
+        }
+        
+        /* 비교 배지 스타일 */
+        .compare-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+        }
+        .compare-badge.better {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: rgb(16, 185, 129);
+        }
+        .compare-badge.similar {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: rgb(245, 158, 11);
+        }
+        .compare-badge.innovative {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: rgb(139, 92, 246);
+        }
+        
+        /* 차별화 카드 스타일 */
+        .feature-card {
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img src="img/logo.png" alt="부천시 로고" class="h-8 mr-2">
+                        <a href="index.html" class="text-xl font-bold text-gradient">부천 스마트 원스톱</a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">홈</a>
+                    <a href="about.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">문제인식</a>
+                    <a href="solution.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">솔루션</a>
+                    <a href="expected-benefits.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">기대효과</a>
+                    <a href="benchmarking.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">벤치마킹</a>
+                    <a href="demo.html" class="nav-link text-gray-700 hover:text-blue-600 transition-colors">AI 챗봇 체험</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-blue-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">홈</a>
+                <a href="about.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">문제인식</a>
+                <a href="solution.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">솔루션</a>
+                <a href="expected-benefits.html" clase="block px-3 py-2 text-gray-700 hover:text-blue-600">기대효과</a>
+                <a href="benchmarking.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">벤치마킹</a>
+                <a href="demo.html" class="block px-3 py-2 text-gray-700 hover:text-blue-600">AI 챗봇 체험</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16 gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">글로벌 <span class="bg-white text-blue-600 px-2">벤치마킹</span> & 차별성</h1>
+            <p class="text-xl max-w-3xl mx-auto opacity-90">
+                세계 최고의 디지털 정부 사례로부터 배우고, 부천시만의 특화된 혁신점을 확인하세요
+            </p>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- 벤치마킹 개요 -->
+            <section class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">우수 사례 <span class="text-gradient">벤치마킹</span></h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        글로벌 디지털 정부 혁신의 성공 사례를 연구하고 부천시 환경에 맞춰 최적화했습니다
+                    </p>
+                </div>
+                
+                <div class="mb-8">
+                    <div class="p-6 bg-indigo-50 rounded-xl">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-globe text-indigo-600 text-2xl"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800 mb-2">글로벌 벤치마킹</h3>
+                                <p class="text-gray-600 text-sm">
+                                    UN 전자정부평가 1, 2위 국가인 에스토니아와 덴마크의 디지털 정부 시스템 연구
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-landmark text-indigo-600 text-2xl"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800 mb-2">국내 선도사례</h3>
+                                <p class="text-gray-600 text-sm">
+                                    서울시 디지털시민시장실, 성남시 온라인 민원 통합시스템 등 국내 선도 사례 분석
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-lightbulb text-indigo-600 text-2xl"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-gray-800 mb-2">부천시 맞춤화</h3>
+                                <p class="text-gray-600 text-sm">
+                                    3구 체제, 초고밀도, 문화도시 등 부천시 고유 특성을 반영한 차별화된 서비스 모델 구축
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 벤치마킹 슬라이더 -->
+                <div class="mb-8 relative">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                        <i class="fas fa-search-plus text-blue-600 mr-2"></i>국내외 우수사례
+                    </h3>
+                    
+                    <div class="slider-container" id="benchmark-slider">
+                        <div class="slider-track">
+                            <!-- 에스토니아 -->
+                            <div class="slider-item p-4">
+                                <div class="bg-white rounded-xl overflow-hidden shadow-lg h-full flex flex-col">
+                                    <div class="relative h-48 bg-gradient-to-r from-blue-400 to-blue-600">
+                                        <img src="img/estonia.jfif" alt="에스토니아 e-Estonia" class="w-full h-full object-cover opacity-80">
+                                        <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                                            <h4 class="text-white text-2xl font-bold">에스토니아</h4>
+                                        </div>
+                                        <div class="absolute top-4 right-4 bg-white text-blue-600 px-2 py-1 rounded-lg text-xs font-semibold">
+                                            UN 전자정부평가 1위
+                                        </div>
+                                    </div>
+                                    <div class="p-6 flex-grow">
+                                        <h4 class="font-bold text-xl mb-2">e-Estonia</h4>
+                                        <p class="text-gray-600 text-sm mb-4">
+                                            세계 최초로 99% 행정서비스를 디지털화한 에스토니아의 혁신적 전자정부 시스템
+                                        </p>
+                                        <div class="space-y-3">
+                                            <div class="flex items-start">
+                                                <div class="text-blue-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">디지털 ID 기반 단일 인증 시스템</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-blue-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">X-Road 기반 시스템 간 안전한 데이터 교환</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-blue-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">Once-Only 원칙: 정보 1회 제출로 재활용</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-blue-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">연간 약 844시간/인당 행정 시간 절약</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <div class="text-sm text-blue-600 mb-2">적용 시사점</div>
+                                        <p class="text-sm text-gray-600">
+                                            단일 디지털 ID 시스템과 Once-Only 원칙을 부천시 통합 플랫폼에 적용하여 3구 간 정보 공유 효율화
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 덴마크 -->
+                            <div class="slider-item p-4">
+                                <div class="bg-white rounded-xl overflow-hidden shadow-lg h-full flex flex-col">
+                                    <div class="relative h-48 bg-gradient-to-r from-red-400 to-red-600">
+                                        <img src="img/denmark.jfif" alt="덴마크 디지털 정부" class="w-full h-full object-cover opacity-80">
+                                        <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                                            <h4 class="text-white text-2xl font-bold">덴마크</h4>
+                                        </div>
+                                        <div class="absolute top-4 right-4 bg-white text-red-600 px-2 py-1 rounded-lg text-xs font-semibold">
+                                            UN 전자정부평가 2위
+                                        </div>
+                                    </div>
+                                    <div class="p-6 flex-grow">
+                                        <h4 class="font-bold text-xl mb-2">Digital Denmark</h4>
+                                        <p class="text-gray-600 text-sm mb-4">
+                                            시민 중심 디지털 전환을 통해 90% 이상의 행정서비스를 온라인화한 덴마크
+                                        </p>
+                                        <div class="space-y-3">
+                                            <div class="flex items-start">
+                                                <div class="text-red-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">NemID/MitID 통합 인증 시스템</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-red-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">Borger.dk 단일 포털로 모든 행정 서비스 통합</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-red-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">Digital Post: 모든 공공 커뮤니케이션 디지털화</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-red-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">디지털 취약계층 지원 프로그램 운영</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <div class="text-sm text-red-600 mb-2">적용 시사점</div>
+                                        <p class="text-sm text-gray-600">
+                                            신분증-모바일 연계 인증과 고령자 대상 디지털 교육 프로그램을 부천시 특화 서비스에 도입
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 서울시 -->
+                            <div class="slider-item p-4">
+                                <div class="bg-white rounded-xl overflow-hidden shadow-lg h-full flex flex-col">
+                                    <div class="relative h-48 bg-gradient-to-r from-green-400 to-green-600">
+                                        <img src="img/seoul.jfif" alt="서울시 디지털시민시장실" class="w-full h-full object-cover opacity-80">
+                                        <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                                            <h4 class="text-white text-2xl font-bold">서울시</h4>
+                                        </div>
+                                        <div class="absolute top-4 right-4 bg-white text-green-600 px-2 py-1 rounded-lg text-xs font-semibold">
+                                            국내 디지털정부 선도
+                                        </div>
+                                    </div>
+                                    <div class="p-6 flex-grow">
+                                        <h4 class="font-bold text-xl mb-2">디지털시민시장실</h4>
+                                        <p class="text-gray-600 text-sm mb-4">
+                                            실시간 도시 데이터 기반 통합 행정 플랫폼과 시민참여형 디지털 거버넌스 모델
+                                        </p>
+                                        <div class="space-y-3">
+                                            <div class="flex items-start">
+                                                <div class="text-green-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">실시간 도시 데이터 기반 의사결정</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-green-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">120다산콜센터-AI 상담 연계</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-green-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">25개 자치구 통합 민원시스템</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-green-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">서울스마트불편신고 앱 도입</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <div class="text-sm text-green-600 mb-2">적용 시사점</div>
+                                        <p class="text-sm text-gray-600">
+                                            대규모 데이터 통합 방식과 자치구별 특성 반영 시스템을 부천 3구 통합에 적용 가능
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 성남시 -->
+                            <div class="slider-item p-4">
+                                <div class="bg-white rounded-xl overflow-hidden shadow-lg h-full flex flex-col">
+                                    <div class="relative h-48 bg-gradient-to-r from-yellow-400 to-yellow-600">
+                                        <img src="img/seongnam1.jpg" alt="성남시 통합 민원시스템" class="w-full h-full object-cover opacity-80">
+                                        <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                                            <h4 class="text-white text-2xl font-bold">성남시</h4>
+                                        </div>
+                                        <div class="absolute top-4 right-4 bg-white text-yellow-600 px-2 py-1 rounded-lg text-xs font-semibold">
+                                            지자체 혁신 모델
+                                        </div>
+                                    </div>
+                                    <div class="p-6 flex-grow">
+                                        <h4 class="font-bold text-xl mb-2">통합 민원 처리 시스템</h4>
+                                        <p class="text-gray-600 text-sm mb-4">
+                                            민원 통합관리와 시민 접근성 강화로 처리율 92% 달성한 성남시 사례
+                                        </p>
+                                        <div class="space-y-3">
+                                            <div class="flex items-start">
+                                                <div class="text-yellow-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">시민 맞춤형 생활밀착 서비스</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-yellow-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">공공데이터 개방 및 시민 참여</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-yellow-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">AI 기반 민원 유형 자동 분류</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-yellow-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">IoT 센서 활용 스마트시티 연계</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <div class="text-sm text-yellow-600 mb-2">적용 시사점</div>
+                                        <p class="text-sm text-gray-600">
+                                            지역 특성에 맞는 맞춤형 서비스 설계와 AI 자동 분류 시스템을 부천시 원스톱 플랫폼에 적용
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 싱가포르 -->
+                            <div class="slider-item p-4">
+                                <div class="bg-white rounded-xl overflow-hidden shadow-lg h-full flex flex-col">
+                                    <div class="relative h-48 bg-gradient-to-r from-purple-400 to-purple-600">
+                                        <img src="img/sinapore.webp" alt="싱가포르 스마트네이션" class="w-full h-full object-cover opacity-80">
+                                        <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                                            <h4 class="text-white text-2xl font-bold">싱가포르</h4>
+                                        </div>
+                                        <div class="absolute top-4 right-4 bg-white text-purple-600 px-2 py-1 rounded-lg text-xs font-semibold">
+                                            아시아 디지털정부 1위
+                                        </div>
+                                    </div>
+                                    <div class="p-6 flex-grow">
+                                        <h4 class="font-bold text-xl mb-2">Smart Nation Singapore</h4>
+                                        <p class="text-gray-600 text-sm mb-4">
+                                            고밀도 도시국가에 최적화된 스마트시티-디지털정부 통합 모델
+                                        </p>
+                                        <div class="space-y-3">
+                                            <div class="flex items-start">
+                                                <div class="text-purple-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">SingPass 디지털 신원 인증 시스템</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-purple-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">모바일 중심 설계 (Moments of Life 앱)</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-purple-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">인구밀도 대응 스마트 솔루션</p>
+                                            </div>
+                                            <div class="flex items-start">
+                                                <div class="text-purple-600 mr-2 mt-1">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
+                                                <p class="text-sm text-gray-600">민관 협력 디지털 서비스 생태계</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <div class="text-sm text-purple-600 mb-2">적용 시사점</div>
+                                        <p class="text-sm text-gray-600">
+                                            고밀도 도시환경 최적화 기술과 생애주기별 맞춤형 서비스 전략을 부천시 환경에 적용
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 슬라이더 컨트롤 -->
+                        <div class="slider-nav">
+                            <button class="slider-prev p-2 bg-white rounded-full shadow-md text-gray-700 hover:text-blue-600 focus:outline-none ml-4">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="slider-next p-2 bg-white rounded-full shadow-md text-gray-700 hover:text-blue-600 focus:outline-none mr-4">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- 슬라이더 인디케이터 -->
+                        <div class="slider-dots mt-4"></div>
+                    </div>
+                </div>
+                
+                <!-- 벤치마킹 카테고리별 분석 -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                        <i class="fas fa-chart-bar text-blue-600 mr-2"></i>카테고리별 벤치마킹 분석
+                    </h3>
+                    
+                    <!-- 카테고리 탭 -->
+                    <div class="flex flex-wrap border-b mb-6">
+                        <div class="bookmark-tab active px-4 py-2 text-blue-600 font-medium" data-tab="tech">기술 인프라</div>
+                        <div class="bookmark-tab px-4 py-2 text-gray-600" data-tab="ux">사용자 경험</div>
+                        <div class="bookmark-tab px-4 py-2 text-gray-600" data-tab="governance">거버넌스</div>
+                        <div class="bookmark-tab px-4 py-2 text-gray-600" data-tab="inclusion">디지털 포용성</div>
+                    </div>
+                    
+                    <!-- 카테고리 콘텐츠 -->
+                    <div class="tab-content">
+                        <!-- 기술 인프라 탭 -->
+                        <div id="tech-content" class="tab-pane active">
+                            <div class="bg-white p-6 rounded-xl shadow-md">
+                                <h4 class="text-xl font-bold text-gray-800 mb-4">기술 인프라 비교 분석</h4>
+                                
+                                <div class="overflow-x-auto">
+                                    <table class="comparison-table min-w-full divide-y divide-gray-200">
+                                        <thead>
+                                            <tr>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">기술 요소</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">에스토니아</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">덴마크</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">서울시</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider highlight-column">부천시 원스톱</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">데이터 통합 구조</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">X-Road 분산형</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">Data Distribution 시스템</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">빅데이터 통합 플랫폼</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">하이브리드 아키텍처 <span class="compare-badge better">차별화</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">인증 시스템</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">Digital ID + 모바일 인증</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">MitID 통합 인증</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">시민카드 + 간편인증</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">멀티 인증 시스템 <span class="compare-badge similar">유사</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">AI 활용</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">문서처리 자동화</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">민원 예측 및 분류</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">챗봇 및 데이터 분석</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">AI 혼잡도 예측 시스템 <span class="compare-badge innovative">혁신</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">모바일 중심성</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간 수준</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">모바일 서비스 강화</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">앱 통합 서비스</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">초고밀도 최적화 앱 <span class="compare-badge better">차별화</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">시스템 개방성</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음 (API 중심)</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간 수준</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">데이터 개방형</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">Open API 기반 <span class="compare-badge similar">유사</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+                                    <!-- 레이더 차트 -->
+                                    <div class="radar-chart-container h-64 mx-auto w-full">
+                                        <canvas id="techRadarChart"></canvas>
+                                    </div>
+                                    
+                                    <!-- 시사점 -->
+                                    <div class="bg-gray-50 p-6 rounded-lg">
+                                        <h5 class="font-bold text-gray-800 mb-3">기술 인프라 시사점</h5>
+                                        <ul class="space-y-2 text-gray-600 text-sm">
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>에스토니아의 X-Road와 같은 분산형 데이터 아키텍처 방식을 참고하되, 3구 통합에 최적화된 하이브리드 구조 설계</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>서울시의 IoT 데이터 활용 방식을 적용하되, 부천시 초고밀도 특성에 맞게 혼잡도 예측 AI 시스템으로 고도화</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>덴마크의 모바일 중심 설계를 벤치마킹하여 부천시 원스톱 앱의 사용자 경험 고도화</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>전자서명법 개정에 맞춘 신원인증 시스템 확대로 법적 효력 있는 디지털 서비스 범위 확장</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 사용자 경험 탭 -->
+                        <div id="ux-content" class="tab-pane hidden">
+                            <div class="bg-white p-6 rounded-xl shadow-md">
+                                <h4 class="text-xl font-bold text-gray-800 mb-4">사용자 경험 비교 분석</h4>
+                                
+                                <div class="overflow-x-auto">
+                                    <table class="comparison-table min-w-full divide-y divide-gray-200">
+                                        <thead>
+                                            <tr>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UX 요소</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">에스토니아</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">덴마크</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">서울시</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider highlight-column">부천시 원스톱</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">서비스 통합도</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">매우 높음 (99%)</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음 (90%)</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간 (75%)</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">높음 (85%) <span class="compare-badge similar">유사</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">직관성</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">매우 높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">매우 높음 <span class="compare-badge better">차별화</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">접근성</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">매우 높음 <span class="compare-badge innovative">혁신</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">개인화</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">낮음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">AI 기반 맞춤형 <span class="compare-badge innovative">혁신</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">다국어 지원</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">3개 언어</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">5개 언어</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">4개 언어</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">8개 언어 <span class="compare-badge better">차별화</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+                                    <!-- 레이더 차트 -->
+                                    <div class="radar-chart-container h-64 mx-auto w-full">
+                                        <canvas id="uxRadarChart"></canvas>
+                                    </div>
+                                    
+                                    <!-- 시사점 -->
+                                    <div class="bg-gray-50 p-6 rounded-lg">
+                                        <h5 class="font-bold text-gray-800 mb-3">사용자 경험 시사점</h5>
+                                        <ul class="space-y-2 text-gray-600 text-sm">
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>덴마크의 사용자 중심 설계 방식을 벤치마킹하되, 부천시 3구 체제에 맞는 직관적 UI 개발</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>에스토니아의 서비스 통합 방식을 참조하여 단일 플랫폼에서 모든 민원 처리 가능하도록 설계</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>서울시 디지털시민시장실의 시민 참여 기능을 확장하여 양방향 소통 채널 강화</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>부천시 다문화 인구 비율을 고려한 8개 언어 지원 시스템으로 접근성 강화</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 거버넌스 탭 -->
+                        <div id="governance-content" class="tab-pane hidden">
+                            <div class="bg-white p-6 rounded-xl shadow-md">
+                                <h4 class="text-xl font-bold text-gray-800 mb-4">거버넌스 비교 분석</h4>
+                                
+                                <div class="overflow-x-auto">
+                                    <table class="comparison-table min-w-full divide-y divide-gray-200">
+                                        <thead>
+                                            <tr>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">거버넌스 요소</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">에스토니아</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">덴마크</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">서울시</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider highlight-column">부천시 원스톱</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">의사결정 구조</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중앙집중형</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">협력적 거버넌스</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">혼합형</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">3구 협업형 <span class="compare-badge innovative">혁신</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">시민 참여</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">매우 높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">높음 <span class="compare-badge similar">유사</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">데이터 주권</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">매우 높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">높음 <span class="compare-badge similar">유사</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">부서 간 협업</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">통합 시스템 <span class="compare-badge better">차별화</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">정책 결정 투명성</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">매우 높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">높음 <span class="compare-badge similar">유사</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+                                    <!-- 레이더 차트 -->
+                                    <div class="radar-chart-container h-64 mx-auto w-full">
+                                        <canvas id="governanceRadarChart"></canvas>
+                                    </div>
+                                    
+                                    <!-- 시사점 -->
+                                    <div class="bg-gray-50 p-6 rounded-lg">
+                                        <h5 class="font-bold text-gray-800 mb-3">거버넌스 시사점</h5>
+                                        <ul class="space-y-2 text-gray-600 text-sm">
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>에스토니아의 중앙집중형 정책결정 구조를 참고하되, 3구 체제에 맞는 협업형 모델 개발</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>서울시의 시민참여 플랫폼을 벤치마킹하여 부천시 정책 결정 과정에 시민 의견 수렴 강화</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>덴마크의 협력적 거버넌스 모델을 참고하여 부천시 3구 간 수평적 협업 체계 구축</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>에스토니아의 데이터 주권 개념을 도입하여 시민이 자신의 데이터 활용 현황을 확인할 수 있는 시스템 구축</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 디지털 포용성 탭 -->
+                        <div id="inclusion-content" class="tab-pane hidden">
+                            <div class="bg-white p-6 rounded-xl shadow-md">
+                                <h4 class="text-xl font-bold text-gray-800 mb-4">디지털 포용성 비교 분석</h4>
+                                
+                                <div class="overflow-x-auto">
+                                    <table class="comparison-table min-w-full divide-y divide-gray-200">
+                                        <thead>
+                                            <tr>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">포용성 요소</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">에스토니아</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">덴마크</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">서울시</th>
+                                                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider highlight-column">부천시 원스톱</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">고령자 접근성</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">찾아가는 서비스 <span class="compare-badge innovative">혁신</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">장애인 접근성</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">매우 높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">매우 높음 <span class="compare-badge similar">유사</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">다국어 지원</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">제한적</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">AI 번역 지원 <span class="compare-badge better">차별화</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">디지털 리터러시</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">매우 높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">대상별 교육 <span class="compare-badge better">차별화</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm font-medium text-gray-900">지원 프로그램</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">중간</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">높음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">낮음</td>
+                                                <td class="px-6 py-4 text-sm text-gray-800 font-medium highlight-column">찾아가는 교육 <span class="compare-badge innovative">혁신</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+                                    <!-- 레이더 차트 -->
+                                    <div class="radar-chart-container h-64 mx-auto w-full">
+                                        <canvas id="inclusionRadarChart"></canvas>
+                                    </div>
+                                    
+                                    <!-- 시사점 -->
+                                    <div class="bg-gray-50 p-6 rounded-lg">
+                                        <h5 class="font-bold text-gray-800 mb-3">디지털 포용성 시사점</h5>
+                                        <ul class="space-y-2 text-gray-600 text-sm">
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>덴마크의 디지털 포용 정책을 벤치마킹하되, 부천시 고령화 인구 특성에 맞춰 강화</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>서울시 디지털 배움터를 참고하여 부천시 3구별 맞춤형 디지털 교육 프로그램 확대</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>에스토니아의 텍스트 단순화 시스템을 도입하여 행정 용어의 이해도 향상</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="text-blue-600 mr-2">•</span>
+                                                <span>부천시 다문화 인구 특성을 고려한 다국어 지원과 문화적 감수성을 반영한 UX 설계</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 부천시 차별화 요소 -->
+            <section class="mb-20 animate-in mt-32" id="differentiation">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4"><span class="text-gradient">부천시</span> 차별화 요소</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        글로벌 모범사례의 장점을 흡수하면서 부천시만의 고유한 특성을 살린 차별화 요소
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- 차별화 요소 1: 3구 통합 플랫폼 -->
+                    <div class="feature-card relative bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                                <i class="fas fa-project-diagram text-blue-600 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">3구 통합 플랫폼</h3>
+                            <p class="text-gray-600 text-sm mb-4">
+                                원미구, 소사구, 오정구를 하나의 플랫폼으로 통합하여 구별 경계 없는 행정서비스 제공
+                            </p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-blue-600"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-700">구간 장벽 없는 원스톱 처리</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-blue-600"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-700">구청별 특화 서비스 통합 안내</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-blue-600"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-700">실시간 빠른 구청 안내</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-gray-600">타 지자체 대비 고유성</span>
+                                    <div class="flex">
+                                        <div class="w-3 h-3 bg-blue-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-blue-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-blue-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-blue-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-blue-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 95%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 차별화 요소 2: 초고밀도 최적화 -->
+                    <div class="feature-card relative bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+                                <i class="fas fa-city text-purple-600 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">초고밀도 최적화</h3>
+                            <p class="text-gray-600 text-sm mb-4">
+                                인구밀도 14,472명/km²의 초고밀도 도시환경에 맞춘 특화 서비스 설계
+                            </p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-50 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-purple-600"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-700">AI 혼잡도 예측 시스템</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-50 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-purple-600"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-700">모바일 행정차량 순회 서비스</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-purple-50 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-purple-600"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-700">다중이용시설 행정 부스</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-gray-600">타 지자체 대비 고유성</span>
+                                    <div class="flex">
+                                        <div class="w-3 h-3 bg-purple-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-purple-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-purple-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-purple-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-gray-300 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                    <div class="bg-purple-600 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 차별화 요소 3: 문화도시 특화 -->
+                    <div class="feature-card relative bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="p-6">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                                <i class="fas fa-film text-green-600 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">문화도시 특화</h3>
+                            <p class="text-gray-600 text-sm mb-4">
+                                유네스코 창의도시이자 만화·웹툰의 메카인 부천시의 문화적 특성을 반영한 서비스
+                            </p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-green-50 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-green-600"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-700">웹툰 캐릭터 활용 민원 안내</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-green-50 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-green-600"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-700">방문 관광객 통합 행정서비스</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-green-50 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-green-600"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-700">문화 행사-행정 서비스 연계</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-gray-600">타 지자체 대비 고유성</span>
+                                    <div class="flex">
+                                        <div class="w-3 h-3 bg-green-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-green-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-green-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-green-600 rounded-full mr-1"></div>
+                                        <div class="w-3 h-3 bg-green-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 차별화 포인트 시각화 -->
+                <div class="mt-12 bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-center text-gray-800 mb-6">부천시 원스톱 플랫폼 이노베이션 포지셔닝</h3>
+                    
+                <div class="h-80 w-full md:w-3/4 mx-auto">
+                        <canvas id="positioningChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="p-4 bg-blue-50 rounded-lg text-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-globe text-blue-600 text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">에스토니아</h4>
+                            <p class="text-sm text-gray-600">기술 혁신 선도</p>
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-lg text-center">
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-users text-red-600 text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">덴마크</h4>
+                            <p class="text-sm text-gray-600">사용자 경험 강점</p>
+                        </div>
+                        <div class="p-4 bg-green-50 rounded-lg text-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-city text-green-600 text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">서울시</h4>
+                            <p class="text-sm text-gray-600">대규모 통합 강점</p>
+                        </div>
+                        <div class="p-4 bg-purple-50 rounded-lg text-center">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-crown text-purple-600 text-xl"></i>
+                            </div>
+                            <h4 class="font-bold text-gray-800 mb-1">부천시</h4>
+                            <p class="text-sm text-gray-600">3구 통합 + 초고밀도 특화</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 종합 비교 -->
+            <section class="animate-in" id="comparison-summary">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">종합 <span class="text-gradient">비교 분석</span></h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        국내외 선도 사례와 부천시 원스톱 플랫폼의 핵심 요소별 비교 평가
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <!-- 종합 평가 1 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-trophy text-yellow-500 mr-2"></i>장점 도입
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">✓</span>
+                                <span class="text-gray-600">에스토니아의 <span class="font-medium">Once-Only 원칙</span>과 데이터 교환 플랫폼</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">✓</span>
+                                <span class="text-gray-600">덴마크의 <span class="font-medium">사용자 중심 설계</span>와 디지털 포용성 전략</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">✓</span>
+                                <span class="text-gray-600">서울시의 <span class="font-medium">자치구 통합 시스템</span>과 실시간 데이터 활용</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">✓</span>
+                                <span class="text-gray-600">싱가포르의 <span class="font-medium">고밀도 도시 최적화</span> 전략과 모바일 중심성</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 종합 평가 2 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-lightbulb text-blue-500 mr-2"></i>부천시 혁신 요소
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">✓</span>
+                                <span class="text-gray-600"><span class="font-medium">3구 통합 플랫폼</span>으로 행정 경계 없는 원스톱 서비스 구현</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">✓</span>
+                                <span class="text-gray-600"><span class="font-medium">AI 기반 혼잡도 예측</span>과 최적 방문시간 추천 시스템</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">✓</span>
+                                <span class="text-gray-600"><span class="font-medium">문화도시 특성 반영</span> 웹툰 캐릭터 활용 직관적 UI/UX</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 mr-2">✓</span>
+                                <span class="text-gray-600"><span class="font-medium">찾아가는 행정 서비스</span>로 고령자, 장애인 접근성 강화</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 종합 평가 3 -->
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-chart-line text-green-500 mr-2"></i>차별적 우위성
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span class="text-gray-600">초고밀도 도시 환경에 최적화된 <span class="font-medium">맞춤형 서비스 설계</span></span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span class="text-gray-600">구별 특성을 살린 <span class="font-medium">차별화된 서비스 통합</span> 제공</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span class="text-gray-600">문화적 정체성을 살린 <span class="font-medium">웹툰 캐릭터 활용 행정 서비스</span></span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span class="text-gray-600">다문화 시민을 위한 <span class="font-medium">8개 언어 AI 번역 지원</span> 서비스</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 최종 결론 -->
+                <div class="bg-white p-8 rounded-xl shadow-lg animate-in text-center mb-12">
+                    <h3 class="text-xl font-bold text-gray-800 mb-5">최종 결론</h3>
+                    <p class="text-gray-600 mb-6 max-w-3xl mx-auto">
+                        부천시 스마트 원스톱 플랫폼은 글로벌 선진 사례의 장점을 흡수하면서 부천시만의 특성인 3구 체제, 초고밀도 도시환경, 문화도시 정체성을 
+                        반영한 차별화된 시스템입니다. 특히 AI 기반 혼잡도 예측과 문화적 특성을 살린 UX 설계는 타 지자체와 차별화된 부천시만의 고유한 
+                        경쟁력이 될 것입니다.
+                    </p>
+                    <div class="flex justify-center items-center space-x-8">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-600 mb-2">85%</div>
+                            <p class="text-sm text-gray-600">글로벌 우수사례<br>적용률</p>
+                        </div>
+                        <div class="h-12 border-l border-gray-300"></div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-purple-600 mb-2">93%</div>
+                            <p class="text-sm text-gray-600">부천시 특성<br>반영도</p>
+                        </div>
+                        <div class="h-12 border-l border-gray-300"></div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-green-600 mb-2">90%</div>
+                            <p class="text-sm text-gray-600">예상 시민<br>만족도</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">부천 스마트 원스톱</h3>
+                    <p class="text-gray-400 text-sm">
+                        부천시 규제개선 기업·시민 아이디어 공모전
+                    </p>
+                    <div class="mt-4 flex items-center">
+                        <a href="#" class="text-gray-400 hover:text-white mr-4">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white mr-4">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">페이지</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">홈</a></li>
+                        <li><a href="index.html#problem" class="text-gray-400 hover:text-white">문제인식</a></li>
+                        <li><a href="solution.html" class="text-gray-400 hover:text-white">솔루션</a></li>
+                        <li><a href="expected-benefits.html" class="text-gray-400 hover:text-white">기대효과</a></li>
+                        <li><a href="#" class="text-white font-medium">벤치마킹</a></li>
+                        <li><a href="demo.html" class="text-gray-400 hover:text-white">AI챗봇 체험</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">관련 링크</h3>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.bucheon.go.kr" target="_blank" class="text-gray-400 hover:text-white">부천시청</a></li>
+                        <li><a href="https://www.data.go.kr" target="_blank" class="text-gray-400 hover:text-white">공공데이터포털</a></li>
+                        <li><a href="https://www.mois.go.kr" target="_blank" class="text-gray-400 hover:text-white">행정안전부</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">문의</h3>
+                    <p class="text-gray-400 text-sm mb-2">
+                        경기도 부천시 원미구 길주로 210
+                    </p>
+                    <p class="text-gray-400 text-sm">
+                        이메일: bucheon@smartcity.kr
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 부천 스마트 원스톱 플랫폼. 모든 권리 보유.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 자바스크립트 -->
+    <script>
+        // 모바일 메뉴 토글
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 북마크 탭 기능
+        const tabs = document.querySelectorAll('.bookmark-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 모든 탭 비활성화
+                tabs.forEach(t => t.classList.remove('active'));
+                // 클릭한 탭 활성화
+                tab.classList.add('active');
+                
+                // 모든 탭 내용 숨기기
+                const tabContents = document.querySelectorAll('.tab-pane');
+                tabContents.forEach(content => content.classList.add('hidden'));
+                
+                // 선택한 탭 내용 표시
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-content`).classList.remove('hidden');
+            });
+        });
+        
+        // 애니메이션 요소 활성화
+        const animateInElements = document.querySelectorAll('.animate-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        animateInElements.forEach(element => {
+            observer.observe(element);
+        });
+        
+        // 슬라이더 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const sliderTrack = document.querySelector('.slider-track');
+            const sliderItems = document.querySelectorAll('.slider-item');
+            const prevButton = document.querySelector('.slider-prev');
+            const nextButton = document.querySelector('.slider-next');
+            const dotsContainer = document.querySelector('.slider-dots');
+            
+            let currentIndex = 0;
+            const itemWidth = 100 / 3; // 3개씩 보이도록 설정 (데스크톱)
+            
+            // 모바일 환경에서는 1개씩만 보이도록
+            const isMobile = window.innerWidth < 768;
+            const visibleItems = isMobile ? 1 : 3;
+            
+            // 인디케이터 도트 생성
+            sliderItems.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('slider-dot');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(index));
+                dotsContainer.appendChild(dot);
+            });
+            
+            // 슬라이드 이동 함수
+            function goToSlide(index) {
+                currentIndex = index;
+                updateSlider();
+            }
+            
+            function updateSlider() {
+                const offset = -currentIndex * (isMobile ? 100 : itemWidth);
+                sliderTrack.style.transform = `translateX(${offset}%)`;
+                
+                // 도트 업데이트
+                const dots = document.querySelectorAll('.slider-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+            
+            // 이전 슬라이드 버튼
+            prevButton.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateSlider();
+                }
+            });
+            
+            // 다음 슬라이드 버튼
+            nextButton.addEventListener('click', () => {
+                if (currentIndex < sliderItems.length - visibleItems) {
+                    currentIndex++;
+                    updateSlider();
+                }
+            });
+            
+            // 초기화
+            updateSlider();
+            
+            // 창 크기 변경 시 업데이트
+            window.addEventListener('resize', () => {
+                const newIsMobile = window.innerWidth < 768;
+                if (newIsMobile !== isMobile) {
+                    isMobile = newIsMobile;
+                    updateSlider();
+                }
+            });
+        });
+    </script>
+    
+    <!-- 차트 스크립트 -->
+    <script src="charts.js"></script>
+</body>
+</html>
+        
