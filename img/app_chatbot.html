@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부천 스마트 원스톱 | AI 챗봇</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: white;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            padding: 15px;
+            background: linear-gradient(135deg, #6366F1, #7C3AED);
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+        }
+        
+        .header-info h1 {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .header-info p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .chat-container {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f5f7fb;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .bot-message {
+            background: white;
+            color: #333;
+            border-top-left-radius: 5px;
+            margin-left: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .bot-avatar {
+            width: 30px;
+            height: 30px;
+            background: #6366F1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: -40px;
+            bottom: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, #6366F1, #7C3AED);
+            color: white;
+            border-top-right-radius: 5px;
+            margin-left: auto;
+        }
+        
+        .timestamp {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+        
+        .input-container {
+            padding: 15px;
+            display: flex;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+        
+        input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366F1, #7C3AED);
+            color: white;
+            border: none;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .quick-questions {
+            padding: 15px;
+            background: white;
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 10px;
+        }
+        
+        .quick-question {
+            background: #f5f7fb;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            padding: 8px 15px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .quick-question:hover {
+            background: #e9ecf3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="avatar">🤖</div>
+        <div class="header-info">
+            <h1>부천 AI 상담원 '부비'</h1>
+            <p>● 온라인 (평균 응답시간: 2초)</p>
+        </div>
+    </header>
+    
+    <div class="chat-container">
+        <div class="message bot-message">
+            <div class="bot-avatar">🤖</div>
+            <p>안녕하세요! 부천시 AI 상담원 '부비'입니다. 어떤 도움이 필요하신가요?</p>
+            <div class="timestamp">2:34 PM</div>
+        </div>
+        
+        <div class="message user-message">
+            <p>전입신고 어떻게 하나요?</p>
+            <div class="timestamp">2:35 PM</div>
+        </div>
+        
+        <div class="message bot-message">
+            <div class="bot-avatar">🤖</div>
+            <p>전입신고는 이사 후 14일 이내에 하셔야 합니다. 부천 스마트 원스톱 플랫폼에서는 온라인으로 간편하게 신청 가능하며, 구청 방문 시에는 신분증만 지참하시면 됩니다.</p>
+            <p>가장 가까운 구청은 위치 기반으로 안내해 드릴 수 있습니다.</p>
+            <div class="timestamp">2:35 PM</div>
+        </div>
+    </div>
+    
+    <div class="quick-questions">
+        <div class="quick-question">사업자등록 절차</div>
+        <div class="quick-question">복지혜택 신청</div>
+        <div class="quick-question">구청 위치 안내</div>
+    </div>
+    
+    <div class="input-container">
+        <input type="text" placeholder="궁금한 내용을 입력하세요...">
+        <button>➤</button>
+    </div>
+</body>
+</html>

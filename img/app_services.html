@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부천 스마트 원스톱 | 서비스 목록</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6366F1, #7C3AED);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            padding: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        
+        .services {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .service-info h2 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        
+        .service-info p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-item {
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>서비스 목록</h1>
+    </header>
+    
+    <div class="services">
+        <div class="service-card">
+            <div class="icon">🏠</div>
+            <div class="service-info">
+                <h2>전입신고</h2>
+                <p>이사 후 14일 이내 필수 신고</p>
+            </div>
+        </div>
+        
+        <div class="service-card">
+            <div class="icon">🏪</div>
+            <div class="service-info">
+                <h2>사업자등록</h2>
+                <p>영업신고부터 4대보험까지 원스톱</p>
+            </div>
+        </div>
+        
+        <div class="service-card">
+            <div class="icon">📄</div>
+            <div class="service-info">
+                <h2>각종 증명서 발급</h2>
+                <p>주민등록 등/초본, 가족관계증명서 등</p>
+            </div>
+        </div>
+        
+        <div class="service-card">
+            <div class="icon">🏥</div>
+            <div class="service-info">
+                <h2>복지서비스 신청</h2>
+                <p>맞춤형 복지혜택 자동 추천</p>
+            </div>
+        </div>
+        
+        <div class="service-card">
+            <div class="icon">🚗</div>
+            <div class="service-info">
+                <h2>차량등록</h2>
+                <p>신규등록, 이전등록, 말소 등</p>
+            </div>
+        </div>
+        
+        <div class="service-card">
+            <div class="icon">🏢</div>
+            <div class="service-info">
+                <h2>건축허가/신고</h2>
+                <p>건축, 개발행위 원스톱 처리</p>
+            </div>
+        </div>
+        
+        <div class="service-card">
+            <div class="icon">💰</div>
+            <div class="service-info">
+                <h2>지방세 납부</h2>
+                <p>간편 결제로 한 번에 납부</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="navigation">
+        <div class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <div>홈</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">🔍</div>
+            <div>검색</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">📋</div>
+            <div>서비스</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div>내정보</div>
+        </div>
+    </div>
+</body>
+</html>

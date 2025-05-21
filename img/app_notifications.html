@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부천 스마트 원스톱 | 맞춤 알림</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .notification-container {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .notification {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .notification-title {
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .notification-content {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-button {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .primary-action {
+            background: linear-gradient(135deg, #6366F1, #7C3AED);
+            color: white;
+            border: none;
+        }
+        
+        .secondary-action {
+            background: transparent;
+            color: #6366F1;
+            border: 1px solid #6366F1;
+        }
+        
+        .notification-unread {
+            border-left: 4px solid #6366F1;
+        }
+        
+        .notification-category {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .category-process {
+            background: #e6f7ff;
+            color: #0086ff;
+        }
+        
+        .category-complete {
+            background: #e6fff0;
+            color: #00c853;
+        }
+        
+        .category-warning {
+            background: #fff6e6;
+            color: #ff9500;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            padding: 10px 15px;
+            gap: 15px;
+            border-bottom: 1px solid #eee;
+            background: white;
+        }
+        
+        .filter-tab {
+            padding-bottom: 8px;
+            font-size: 14px;
+            color: #888;
+            cursor: pointer;
+        }
+        
+        .active-tab {
+            color: #6366F1;
+            border-bottom: 2px solid #6366F1;
+            font-weight: bold;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+        
+        .nav-item {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .active-nav {
+            color: #6366F1;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>알림센터</h1>
+        <span style="font-size: 20px;">⚙️</span>
+    </header>
+    
+    <div class="filter-tabs">
+        <div class="filter-tab active-tab">전체</div>
+        <div class="filter-tab">진행중</div>
+        <div class="filter-tab">완료</div>
+    </div>
+    
+    <div class="notification-container">
+        <div class="notification notification-unread">
+            <span class="notification-category category-process">진행중</span>
+            <div class="notification-header">
+                <h3 class="notification-title">건축허가 진행상황 업데이트</h3>
+                <span class="notification-time">10분 전</span>
+            </div>
+            <p class="notification-content">건축허가 신청(#BU25051023)이 건축심의 단계로 진행되었습니다. 담당자: 김철수 주무관 (원미구청 건축과)</p>
+            <div class="notification-actions">
+                <button class="action-button primary-action">진행상황 보기</button>
+                <button class="action-button secondary-action">담당자 연락</button>
+            </div>
+        </div>
+        
+        <div class="notification notification-unread">
+            <span class="notification-category category-warning">마감임박</span>
+            <div class="notification-header">
+                <h3 class="notification-title">자동차세 납부 기한 안내</h3>
+                <span class="notification-time">30분 전</span>
+            </div>
+            <p class="notification-content">2025년 1기분 자동차세 납부 기한이 3일 남았습니다. 미납 시 가산세가 부과될 수 있습니다.</p>
+            <div class="notification-actions">
+                <button class="action-button primary-action">바로 납부하기</button>
+                <button class="action-button secondary-action">세부내역 보기</button>
+            </div>
+        </div>
+        
+        <div class="notification">
+            <span class="notification-category category-complete">완료</span>
+            <div class="notification-header">
+                <h3 class="notification-title">주민등록등본 발급 완료</h3>
+                <span class="notification-time">어제</span>
+            </div>
+            <p class="notification-content">요청하신 주민등록등본이 발급되었습니다. 앱 내 '내 문서함'에서 확인하실 수 있습니다.</p>
+            <div class="notification-actions">
+                <button class="action-button primary-action">문서 보기</button>
+                <button class="action-button secondary-action">다운로드</button>
+            </div>
+        </div>
+        
+        <div class="notification">
+            <span class="notification-category category-process">진행중</span>
+            <div class="notification-header">
+                <h3 class="notification-title">사업자등록 신청 접수</h3>
+                <span class="notification-time">2일 전</span>
+            </div>
+            <p class="notification-content">사업자등록 신청(#BZ25050921)이 접수되었습니다. 현재 서류 검토 중이며, 예상 처리 완료일은 5월 22일입니다.</p>
+            <div class="notification-actions">
+                <button class="action-button primary-action">진행상황 보기</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="navigation">
+        <div class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <div>홈</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">📋</div>
+            <div>서비스</div>
+        </div>
+        <div class="nav-item active-nav">
+            <div class="nav-icon">🔔</div>
+            <div>알림</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div>내정보</div>
+        </div>
+    </div>
+</body>
+</html>

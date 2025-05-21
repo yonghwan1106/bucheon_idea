@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <!-- 그라데이션 정의 -->
+    <linearGradient id="mapBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e6f2ff" />
+      <stop offset="100%" stop-color="#d1e6ff" />
+    </linearGradient>
+    
+    <!-- 도로 패턴 -->
+    <pattern id="roadPattern" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#f0f0f0"/>
+      <path d="M 0,3 L 6,3" stroke="#ccc" stroke-width="1"/>
+    </pattern>
+    
+    <!-- 차량 애니메이션 -->
+    <path id="vehiclePath" d="M 100,380 C 150,350 200,320 300,320 S 450,350 500,300 S 600,220 700,200" fill="none" stroke="none"/>
+    
+    <!-- 맵 그리드 패턴 -->
+    <pattern id="gridPattern" patternUnits="userSpaceOnUse" width="40" height="40">
+      <rect width="40" height="40" fill="none"/>
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e6e6e6" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  
+  <!-- 배경 맵 -->
+  <rect width="800" height="500" fill="url(#mapBg)"/>
+  <rect width="800" height="500" fill="url(#gridPattern)"/>
+  
+  <!-- 부천시 주요 지역 (단순화된 표현) -->
+  <g id="bucheon-regions" opacity="0.3">
+    <!-- 부천시 중앙 지역 -->
+    <path d="M 200,150 L 350,120 L 500,180 L 450,300 L 300,320 L 150,250 Z" fill="#90cdf4" stroke="#3182ce" stroke-width="1"/>
+    <!-- 원미구 -->
+    <path d="M 150,250 L 300,320 L 250,400 L 100,380 Z" fill="#81e6d9" stroke="#38b2ac" stroke-width="1"/>
+    <!-- 소사구 -->
+    <path d="M 300,320 L 450,300 L 500,420 L 370,450 L 250,400 Z" fill="#d6bcfa" stroke="#805ad5" stroke-width="1"/>
+    <!-- 오정구 -->
+    <path d="M 450,300 L 500,180 L 650,220 L 680,350 L 500,420 Z" fill="#fbd38d" stroke="#ed8936" stroke-width="1"/>
+  </g>
+  
+  <!-- 주요 도로 -->
+  <g id="roads">
+    <!-- 도로 1 (세로 방향) -->
+    <rect x="300" y="100" width="20" height="350" fill="url(#roadPattern)" stroke="#bbb" stroke-width="1"/>
+    <!-- 도로 2 (가로 방향) -->
+    <rect x="100" y="250" width="600" height="15" fill="url(#roadPattern)" stroke="#bbb" stroke-width="1"/>
+    <!-- 도로 3 (대각선) -->
+    <rect x="0" y="0" width="700" height="14" fill="url(#roadPattern)" stroke="#bbb" stroke-width="1" transform="translate(150, 380) rotate(-15)"/>
+    <!-- 도로 4 (곡선 표현) -->
+    <path d="M 500,180 C 550,250 600,270 680,350" fill="none" stroke="#bbb" stroke-width="15" stroke-linecap="round" opacity="0.7"/>
+    <path d="M 500,180 C 550,250 600,270 680,350" fill="none" stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-dasharray="5,5" opacity="0.7"/>
+  </g>
+  
+  <!-- 지역 이름 -->
+  <g id="region-labels" font-family="Arial, sans-serif" font-size="14" fill="#555" text-anchor="middle">
+    <text x="250" y="220">원미구</text>
+    <text x="200" y="330">소사구</text>
+    <text x="550" y="300">오정구</text>
+  </g>
+  
+  <!-- 주요 건물/시설 아이콘 -->
+  <g id="landmarks">
+    <!-- 시청 -->
+    <rect x="300" y="200" width="24" height="24" fill="#3182ce" rx="2"/>
+    <rect x="304" y="204" width="16" height="16" fill="#fff" rx="1"/>
+    <text x="312" y="240" font-family="Arial, sans-serif" font-size="10" fill="#333" text-anchor="middle">시청</text>
+    
+    <!-- 구청 1 -->
+    <rect x="180" y="280" width="20" height="20" fill="#38b2ac" rx="2"/>
+    <rect x="184" y="284" width="12" height="12" fill="#fff" rx="1"/>
+    <text x="190" y="310" font-family="Arial, sans-serif" font-size="10" fill="#333" text-anchor="middle">구청</text>
+    
+    <!-- 구청 2 -->
+    <rect x="500" y="350" width="20" height="20" fill="#805ad5" rx="2"/>
+    <rect x="504" y="354" width="12" height="12" fill="#fff" rx="1"/>
+    <text x="510" y="380" font-family="Arial, sans-serif" font-size="10" fill="#333" text-anchor="middle">구청</text>
+    
+    <!-- 주요 다른 시설들 -->
+    <circle cx="400" cy="150" r="8" fill="#f56565"/>
+    <circle cx="550" cy="250" r="8" fill="#f56565"/>
+    <circle cx="200" cy="400" r="8" fill="#f56565"/>
+  </g>
+  
+  <!-- 이동 경로 표시 -->
+  <g id="route">
+    <!-- 메인 경로 -->
+    <path d="M 100,380 C 150,350 200,320 300,320 S 450,350 500,300 S 600,220 700,200" 
+          fill="none" stroke="#4299e1" stroke-width="4" 
+          stroke-dasharray="8,3" stroke-linecap="round"/>
+    
+    <!-- 출발점 -->
+    <circle cx="100" cy="380" r="8" fill="#2b6cb0"/>
+    <circle cx="100" cy="380" r="12" fill="none" stroke="#2b6cb0" stroke-width="2">
+      <animate attributeName="r" values="12;18;12" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <text x="100" y="410" font-family="Arial, sans-serif" font-size="12" fill="#2b6cb0" font-weight="bold" text-anchor="middle">출발</text>
+    
+    <!-- 중간 경유지 -->
+    <circle cx="300" cy="320" r="6" fill="#4299e1"/>
+    <text x="300" y="340" font-family="Arial, sans-serif" font-size="10" fill="#4299e1" text-anchor="middle">경유지1</text>
+    
+    <circle cx="500" cy="300" r="6" fill="#4299e1"/>
+    <text x="500" y="320" font-family="Arial, sans-serif" font-size="10" fill="#4299e1" text-anchor="middle">경유지2</text>
+    
+    <!-- 도착점 -->
+    <circle cx="700" cy="200" r="8" fill="#e53e3e"/>
+    <circle cx="700" cy="200" r="12" fill="none" stroke="#e53e3e" stroke-width="2">
+      <animate attributeName="r" values="12;18;12" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <text x="700" y="180" font-family="Arial, sans-serif" font-size="12" fill="#e53e3e" font-weight="bold" text-anchor="middle">도착</text>
+  </g>
+  
+  <!-- 행정차량 애니메이션 -->
+  <g id="vehicle">
+    <!-- 차량 경로를 따라 움직이는 애니메이션 -->
+    <animateMotion
+      xlink:href="#vehicleGroup"
+      dur="15s"
+      begin="0s"
+      fill="freeze"
+      repeatCount="indefinite">
+      <mpath xlink:href="#vehiclePath"/>
+    </animateMotion>
+    
+    <!-- 차량 그래픽 -->
+    <g id="vehicleGroup" transform="translate(-25, -25)">
+      <!-- 차량 본체 -->
+      <rect x="5" y="10" width="50" height="25" rx="5" fill="#2b6cb0" stroke="#1a4e82" stroke-width="1"/>
+      <!-- 앞부분 (트럭 캡) -->
+      <rect x="0" y="15" width="15" height="20" rx="3" fill="#3182ce" stroke="#1a4e82" stroke-width="1"/>
+      <!-- 창문 -->
+      <rect x="3" y="18" width="8" height="8" rx="1" fill="#bae6fd" stroke="#1a4e82" stroke-width="0.5"/>
+      <!-- 차량 후면부 -->
+      <rect x="40" y="13" width="13" height="19" rx="2" fill="#2563eb" stroke="#1a4e82" stroke-width="1"/>
+      <!-- 타이어 -->
+      <circle cx="15" cy="35" r="5" fill="#1e293b" stroke="#0f172a" stroke-width="1"/>
+      <circle cx="15" cy="35" r="2" fill="#475569"/>
+      <circle cx="45" cy="35" r="5" fill="#1e293b" stroke="#0f172a" stroke-width="1"/>
+      <circle cx="45" cy="35" r="2" fill="#475569"/>
+      <!-- 불빛/경광등 -->
+      <rect x="20" y="5" width="20" height="5" rx="2" fill="#3182ce" stroke="#1a4e82" stroke-width="1"/>
+      <circle cx="25" cy="7.5" r="2" fill="#ef4444">
+        <animate attributeName="fill" values="#ef4444;#fee2e2;#ef4444" dur="0.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="35" cy="7.5" r="2" fill="#3b82f6">
+        <animate attributeName="fill" values="#3b82f6;#dbeafe;#3b82f6" dur="0.5s" repeatCount="indefinite"/>
+      </circle>
+      <!-- 차량 로고 -->
+      <text x="30" y="25" font-family="Arial, sans-serif" font-size="8" fill="white" text-anchor="middle" font-weight="bold">부천시</text>
+    </g>
+  </g>
+  
+  <!-- 설명 텍스트 -->
+  <g id="description" font-family="Arial, sans-serif">
+    <rect x="50" y="50" width="200" height="80" rx="10" fill="white" stroke="#3182ce" stroke-width="2" opacity="0.9"/>
+    <text x="70" y="80" font-size="16" fill="#2b6cb0" font-weight="bold">부천 모바일 행정차량</text>
+    <text x="70" y="100" font-size="12" fill="#4a5568">찾아가는 행정서비스</text>
+    <text x="70" y="115" font-size="12" fill="#4a5568">시민 맞춤형 현장 행정</text>
+  </g>
+  
+  <!-- 맵 컨트롤 (장식) -->
+  <g id="map-controls">
+    <rect x="700" y="50" width="40" height="80" rx="5" fill="white" stroke="#cbd5e0" stroke-width="1" opacity="0.9"/>
+    <circle cx="720" cy="70" r="10" fill="#ebf4ff" stroke="#4299e1" stroke-width="1"/>
+    <text x="720" y="74" font-family="Arial, sans-serif" font-size="12" fill="#4299e1" text-anchor="middle" font-weight="bold">+</text>
+    <line x1="710" y1="90" x2="730" y2="90" stroke="#cbd5e0" stroke-width="1"/>
+    <circle cx="720" cy="110" r="10" fill="#ebf4ff" stroke="#4299e1" stroke-width="1"/>
+    <text x="720" y="114" font-family="Arial, sans-serif" font-size="14" fill="#4299e1" text-anchor="middle" font-weight="bold">-</text>
+  </g>
+  
+  <!-- 북쪽 방향 표시 -->
+  <g id="north-indicator" transform="translate(740, 150)">
+    <circle cx="0" cy="0" r="15" fill="white" stroke="#cbd5e0" stroke-width="1"/>
+    <path d="M 0,-10 L 5,5 L 0,0 L -5,5 Z" fill="#4299e1"/>
+    <text x="0" y="2" font-family="Arial, sans-serif" font-size="8" fill="#4299e1" text-anchor="middle" font-weight="bold">N</text>
+  </g>
+  
+  <!-- 현재 위치 표시 (애니메이션) -->
+  <g id="current-location" transform="translate(300, 320)">
+    <circle cx="0" cy="0" r="8" fill="#ef4444" opacity="0.7">
+      <animate attributeName="r" values="8;12;8" dur="1.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;0.3;0.7" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="4" fill="#ef4444"/>
+  </g>
+</svg>
