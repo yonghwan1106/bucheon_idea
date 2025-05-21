@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="100%" height="100%">
+  <style>
+    /* Base styles */
+    text {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      fill: #333;
+    }
+    .dept-text {
+      font-size: 14px;
+      font-weight: bold;
+      fill: #333;
+      text-anchor: middle;
+    }
+    .user {
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .user.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .department {
+      opacity: 0.5;
+      transition: opacity 0.5s ease, transform 0.3s ease;
+    }
+    .department.active {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    .document {
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .document.active {
+      opacity: 1;
+    }
+    .arrow {
+      stroke-dasharray: 500;
+      stroke-dashoffset: 500;
+      transition: stroke-dashoffset 1s ease;
+    }
+    .arrow.active {
+      stroke-dashoffset: 0;
+    }
+    .step-title {
+      opacity: 0;
+      font-size: 16px;
+      font-weight: bold;
+      fill: #333;
+      transition: opacity 0.5s ease;
+    }
+    .step-title.active {
+      opacity: 1;
+    }
+    .completion-badge {
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .completion-badge.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .doc-text {
+      font-size: 12px;
+      fill: #555;
+    }
+  </style>
+
+  <!-- Title -->
+  <text x="500" y="40" class="title" text-anchor="middle">부천시 원스톱 디지털 워크플로우</text>
+
+  <!-- User -->
+  <g class="user" transform="translate(100, 150)">
+    <circle cx="0" cy="0" r="30" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2"/>
+    <path d="M0,-15 a15,15 0 0,1 0,30 a15,15 0 0,1 0,-30" fill="none" stroke="#3b82f6" stroke-width="2" />
+    <circle cx="0" cy="-7" r="7" fill="#3b82f6" />
+    <text x="0" y="50" text-anchor="middle" fill="#333" font-weight="bold">시민</text>
+  </g>
+
+  <!-- Department boxes -->
+  <!-- Main office -->
+  <g class="department" id="main-office" transform="translate(300, 150)">
+    <rect x="-60" y="-40" width="120" height="80" rx="5" ry="5" fill="#ebf5ff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="0" y="5" class="dept-text" text-anchor="middle">구청 민원실</text>
+    <text x="0" y="25" class="doc-text" text-anchor="middle">(통합 접수)</text>
+  </g>
+
+  <!-- Tax office -->
+  <g class="department" id="tax-office" transform="translate(500, 80)">
+    <rect x="-60" y="-40" width="120" height="80" rx="5" ry="5" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+    <text x="0" y="5" class="dept-text" text-anchor="middle">세무서</text>
+    <text x="0" y="25" class="doc-text" text-anchor="middle">(사업자등록)</text>
+  </g>
+
+  <!-- City planning -->
+  <g class="department" id="city-planning" transform="translate(500, 220)">
+    <rect x="-60" y="-40" width="120" height="80" rx="5" ry="5" fill="#fdf4ff" stroke="#d946ef" stroke-width="2"/>
+    <text x="0" y="5" class="dept-text" text-anchor="middle">도시계획과</text>
+    <text x="0" y="25" class="doc-text" text-anchor="middle">(인허가)</text>
+  </g>
+
+  <!-- Welfare -->
+  <g class="department" id="welfare" transform="translate(700, 80)">
+    <rect x="-60" y="-40" width="120" height="80" rx="5" ry="5" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+    <text x="0" y="5" class="dept-text" text-anchor="middle">복지정책과</text>
+    <text x="0" y="25" class="doc-text" text-anchor="middle">(지원금 신청)</text>
+  </g>
+
+  <!-- Labor office -->
+  <g class="department" id="labor-office" transform="translate(700, 220)">
+    <rect x="-60" y="-40" width="120" height="80" rx="5" ry="5" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+    <text x="0" y="5" class="dept-text" text-anchor="middle">고용노동부</text>
+    <text x="0" y="25" class="doc-text" text-anchor="middle">(4대보험)</text>
+  </g>
+
+  <!-- Completion -->
+  <g class="department" id="completion" transform="translate(900, 150)">
+    <rect x="-60" y="-40" width="120" height="80" rx="5" ry="5" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+    <text x="0" y="5" class="dept-text" text-anchor="middle">처리 완료</text>
+    <text x="0" y="25" class="doc-text" text-anchor="middle">(알림 서비스)</text>
+  </g>
+
+  <!-- Arrows -->
+  <!-- User to Main Office -->
+  <path class="arrow" d="M130,150 L240,150" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Main Office to Departments -->
+  <path class="arrow" id="arrow-to-tax" d="M360,130 L440,100" stroke="#22c55e" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path class="arrow" id="arrow-to-planning" d="M360,170 L440,200" stroke="#d946ef" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Second level departments -->
+  <path class="arrow" id="arrow-to-welfare" d="M560,80 L640,80" stroke="#f97316" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path class="arrow" id="arrow-to-labor" d="M560,220 L640,220" stroke="#0ea5e9" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- To completion -->
+  <path class="arrow" id="arrow-welfare-to-completion" d="M760,100 L830,130" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path class="arrow" id="arrow-labor-to-completion" d="M760,200 L830,170" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Documents -->
+  <!-- Initial document -->
+  <g class="document" id="doc-initial" transform="translate(180, 130)">
+    <rect x="-15" y="-20" width="30" height="40" fill="white" stroke="#3b82f6" stroke-width="1"/>
+    <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#3b82f6" stroke-width="1"/>
+    <line x1="-8" y1="-5" x2="8" y2="-5" stroke="#3b82f6" stroke-width="1"/>
+    <line x1="-8" y1="0" x2="8" y2="0" stroke="#3b82f6" stroke-width="1"/>
+    <line x1="-8" y1="5" x2="5" y2="5" stroke="#3b82f6" stroke-width="1"/>
+  </g>
+
+  <!-- Tax document -->
+  <g class="document" id="doc-tax" transform="translate(410, 90)">
+    <rect x="-15" y="-20" width="30" height="40" fill="white" stroke="#22c55e" stroke-width="1"/>
+    <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#22c55e" stroke-width="1"/>
+    <line x1="-8" y1="-5" x2="8" y2="-5" stroke="#22c55e" stroke-width="1"/>
+    <line x1="-8" y1="0" x2="8" y2="0" stroke="#22c55e" stroke-width="1"/>
+    <line x1="-8" y1="5" x2="5" y2="5" stroke="#22c55e" stroke-width="1"/>
+  </g>
+
+  <!-- Planning document -->
+  <g class="document" id="doc-planning" transform="translate(410, 190)">
+    <rect x="-15" y="-20" width="30" height="40" fill="white" stroke="#d946ef" stroke-width="1"/>
+    <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#d946ef" stroke-width="1"/>
+    <line x1="-8" y1="-5" x2="8" y2="-5" stroke="#d946ef" stroke-width="1"/>
+    <line x1="-8" y1="0" x2="8" y2="0" stroke="#d946ef" stroke-width="1"/>
+    <line x1="-8" y1="5" x2="5" y2="5" stroke="#d946ef" stroke-width="1"/>
+  </g>
+
+  <!-- Welfare document -->
+  <g class="document" id="doc-welfare" transform="translate(600, 70)">
+    <rect x="-15" y="-20" width="30" height="40" fill="white" stroke="#f97316" stroke-width="1"/>
+    <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#f97316" stroke-width="1"/>
+    <line x1="-8" y1="-5" x2="8" y2="-5" stroke="#f97316" stroke-width="1"/>
+    <line x1="-8" y1="0" x2="8" y2="0" stroke="#f97316" stroke-width="1"/>
+    <line x1="-8" y1="5" x2="5" y2="5" stroke="#f97316" stroke-width="1"/>
+  </g>
+
+  <!-- Labor document -->
+  <g class="document" id="doc-labor" transform="translate(600, 210)">
+    <rect x="-15" y="-20" width="30" height="40" fill="white" stroke="#0ea5e9" stroke-width="1"/>
+    <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#0ea5e9" stroke-width="1"/>
+    <line x1="-8" y1="-5" x2="8" y2="-5" stroke="#0ea5e9" stroke-width="1"/>
+    <line x1="-8" y1="0" x2="8" y2="0" stroke="#0ea5e9" stroke-width="1"/>
+    <line x1="-8" y1="5" x2="5" y2="5" stroke="#0ea5e9" stroke-width="1"/>
+  </g>
+
+  <!-- Completion documents -->
+  <g class="document" id="doc-completion1" transform="translate(800, 120)">
+    <rect x="-15" y="-20" width="30" height="40" fill="white" stroke="#64748b" stroke-width="1"/>
+    <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#64748b" stroke-width="1"/>
+    <line x1="-8" y1="-5" x2="8" y2="-5" stroke="#64748b" stroke-width="1"/>
+    <line x1="-8" y1="0" x2="8" y2="0" stroke="#64748b" stroke-width="1"/>
+    <line x1="-8" y1="5" x2="5" y2="5" stroke="#64748b" stroke-width="1"/>
+  </g>
+
+  <g class="document" id="doc-completion2" transform="translate(800, 180)">
+    <rect x="-15" y="-20" width="30" height="40" fill="white" stroke="#64748b" stroke-width="1"/>
+    <line x1="-8" y1="-10" x2="8" y2="-10" stroke="#64748b" stroke-width="1"/>
+    <line x1="-8" y1="-5" x2="8" y2="-5" stroke="#64748b" stroke-width="1"/>
+    <line x1="-8" y1="0" x2="8" y2="0" stroke="#64748b" stroke-width="1"/>
+    <line x1="-8" y1="5" x2="5" y2="5" stroke="#64748b" stroke-width="1"/>
+  </g>
+
+  <!-- Step titles -->
+  <text x="100" y="230" class="step-title" id="step1-title">1. 시민이 한 번 문서 제출</text>
+  <text x="300" y="230" class="step-title" id="step2-title">2. 통합 접수 및 분석</text>
+  <text x="500" y="300" class="step-title" id="step3-title">3. 관련 부서 자동 배분</text>
+  <text x="700" y="300" class="step-title" id="step4-title">4. 동시 병렬 처리</text>
+  <text x="900" y="230" class="step-title" id="step5-title">5. 처리 완료 후 알림</text>
+
+  <!-- Completion badge -->
+  <g class="completion-badge" transform="translate(900, 150) scale(0.8)">
+    <circle cx="0" cy="0" r="30" fill="#4ade80" opacity="0.9"/>
+    <path d="M-10,0 L-2,8 L10,-5" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Mobile notification -->
+  <g class="document" id="notification" transform="translate(950, 150) scale(0)">
+    <rect x="-25" y="-40" width="50" height="80" rx="5" ry="5" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+    <rect x="-20" y="-35" width="40" height="70" rx="3" ry="3" fill="white" stroke="#64748b" stroke-width="1"/>
+    <circle cx="0" cy="20" r="7" fill="#4ade80"/>
+    <path d="M-5,20 L-2,23 L5,16" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="0" y="-15" text-anchor="middle" fill="#333" font-size="7">카카오톡</text>
+    <text x="0" y="-5" text-anchor="middle" fill="#333" font-size="6">실시간 알림</text>
+  </g>
+
+  <!-- Description -->
+  <g transform="translate(500, 400)">
+    <rect x="-250" y="-20" width="500" height="100" rx="5" ry="5" fill="#f8fafc" stroke="#64748b" stroke-width="1" opacity="0.7"/>
+    <text x="0" y="0" text-anchor="middle" fill="#333" font-weight="bold" font-size="16">원스톱 디지털 워크플로우</text>
+    <text x="0" y="30" text-anchor="middle" fill="#555" font-size="14">다양한 부서와 기관에 걸친 민원도 단 한 번의 서류 제출로 모든 절차가 자동 진행됩니다.</text>
+    <text x="0" y="55" text-anchor="middle" fill="#555" font-size="14">진행상황은 실시간으로 모바일에서 확인할 수 있으며, 추가 요청이 있을 경우 즉시 알림을 받습니다.</text>
+  </g>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <!-- JavaScript to control animation -->
+  <script type="text/javascript">
+    <![CDATA[
+      // Animation control
+      function playDocAnimation() {
+        const timeline = [
+          // Step 1: User appears
+          { time: 0, action: () => { 
+            document.querySelector('.user').classList.add('active');
+            document.querySelector('#step1-title').classList.add('active'); 
+          }},
+          // Step 2: Initial document appears
+          { time: 500, action: () => { document.querySelector('#doc-initial').classList.add('active'); }},
+          // Step 3: Arrow to main office
+          { time: 1000, action: () => { document.querySelectorAll('.arrow')[0].classList.add('active'); }},
+          // Step 4: Main office highlights
+          { time: 1500, action: () => { 
+            document.querySelector('#main-office').classList.add('active'); 
+            document.querySelector('#step2-title').classList.add('active');
+          }},
+          // Step 5: Arrows to departments
+          { time: 2000, action: () => { 
+            document.querySelector('#arrow-to-tax').classList.add('active');
+            document.querySelector('#arrow-to-planning').classList.add('active');
+            document.querySelector('#step3-title').classList.add('active');
+          }},
+          // Step 6: Tax & Planning departments and documents
+          { time: 2500, action: () => { 
+            document.querySelector('#tax-office').classList.add('active'); 
+            document.querySelector('#city-planning').classList.add('active');
+            document.querySelector('#doc-tax').classList.add('active');
+            document.querySelector('#doc-planning').classList.add('active');
+          }},
+          // Step 7: Arrows to next departments
+          { time: 3000, action: () => { 
+            document.querySelector('#arrow-to-welfare').classList.add('active');
+            document.querySelector('#arrow-to-labor').classList.add('active');
+            document.querySelector('#step4-title').classList.add('active');
+          }},
+          // Step 8: Welfare & Labor departments and documents
+          { time: 3500, action: () => { 
+            document.querySelector('#welfare').classList.add('active'); 
+            document.querySelector('#labor-office').classList.add('active');
+            document.querySelector('#doc-welfare').classList.add('active');
+            document.querySelector('#doc-labor').classList.add('active');
+          }},
+          // Step 9: Arrows to completion
+          { time: 4000, action: () => { 
+            document.querySelector('#arrow-welfare-to-completion').classList.add('active');
+            document.querySelector('#arrow-labor-to-completion').classList.add('active');
+          }},
+          // Step 10: Completion department and documents
+          { time: 4500, action: () => { 
+            document.querySelector('#completion').classList.add('active'); 
+            document.querySelector('#doc-completion1').classList.add('active');
+            document.querySelector('#doc-completion2').classList.add('active');
+            document.querySelector('#step5-title').classList.add('active');
+          }},
+          // Step 11: Completion badge
+          { time: 5000, action: () => { 
+            document.querySelector('.completion-badge').classList.add('active'); 
+          }},
+          // Step 12: Mobile notification
+          { time: 5500, action: () => { 
+            const notification = document.querySelector('#notification');
+            notification.classList.add('active');
+            notification.setAttribute('transform', 'translate(950, 150) scale(1)');
+          }},
+          // Reset animation after a delay
+          { time: 8000, action: () => { resetAnimation(); }}
+        ];
+        
+        // Run each action at its specified time
+        timeline.forEach(item => {
+          setTimeout(item.action, item.time);
+        });
+      }
+      
+      // Reset animation
+      function resetAnimation() {
+        const activeElements = document.querySelectorAll('.active');
+        activeElements.forEach(el => {
+          el.classList.remove('active');
+        });
+        
+        // Reset notification scale
+        const notification = document.querySelector('#notification');
+        notification.setAttribute('transform', 'translate(950, 150) scale(0)');
+      }
+      
+      // Make the function available to the parent document
+      window.playDocAnimation = playDocAnimation;
+    ]]>
+  </script>
+</svg>

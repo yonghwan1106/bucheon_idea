@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 800 400" width="100%" height="100%">
+  <!-- 배경 -->
+  <rect width="800" height="400" fill="#FFFFFF" rx="10" ry="10" />
+
+  <!-- 그리드 라인 (가이드용, 시각성 향상) -->
+  <g stroke="#f0f0f0" stroke-width="1">
+    <line x1="0" y1="0" x2="800" y2="0" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="0" x2="0" y2="400" />
+    <line x1="250" y1="0" x2="250" y2="400" />
+    <line x1="400" y1="0" x2="400" y2="400" />
+    <line x1="600" y1="0" x2="600" y2="400" />
+    <line x1="800" y1="0" x2="800" y2="400" />
+  </g>
+
+  <!-- 사용자 -->
+  <g id="user" transform="translate(100, 200)">
+    <circle cx="0" cy="0" r="40" fill="#F3F4F6" />
+    <circle cx="0" cy="-15" r="15" fill="#6B7280" />
+    <path d="M-25,25 Q0,50 25,25" stroke="#6B7280" stroke-width="8" fill="none" />
+    <text x="0" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold">시민</text>
+  </g>
+
+  <!-- 플랫폼 -->
+  <g id="platform" transform="translate(400, 200)">
+    <circle cx="0" cy="0" r="60" fill="#DBEAFE" />
+    <rect x="-20" y="-15" width="40" height="30" rx="2" ry="2" fill="#3B82F6" />
+    <rect x="-15" y="-10" width="30" height="20" rx="1" ry="1" fill="#93C5FD" />
+    <rect x="-25" y="15" width="50" height="5" rx="1" ry="1" fill="#3B82F6" />
+    <text x="0" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold">스마트 원스톱 플랫폼</text>
+  </g>
+
+  <!-- 부서 - 건축과 -->
+  <g id="dept1" transform="translate(600, 100)" opacity="0.4">
+    <circle cx="0" cy="0" r="40" fill="#DCFCE7" />
+    <rect x="-20" y="-20" width="40" height="40" rx="4" ry="4" fill="#22C55E" />
+    <rect x="-15" y="-15" width="15" height="10" fill="#DCFCE7" />
+    <rect x="0" y="-15" width="15" height="10" fill="#DCFCE7" />
+    <rect x="-15" y="-5" width="15" height="10" fill="#DCFCE7" />
+    <rect x="0" y="-5" width="15" height="10" fill="#DCFCE7" />
+    <rect x="-15" y="5" width="15" height="10" fill="#DCFCE7" />
+    <rect x="0" y="5" width="15" height="10" fill="#DCFCE7" />
+    <text x="0" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold">건축과</text>
+  </g>
+
+  <!-- 부서 - 세무과 -->
+  <g id="dept2" transform="translate(700, 200)" opacity="0.4">
+    <circle cx="0" cy="0" r="40" fill="#EDE9FE" />
+    <path d="M-15,-15 L15,-15 L15,15 L-15,15 Z" fill="#8B5CF6" />
+    <path d="M-10,-10 L10,-10 L10,0 L-10,0 Z" fill="#EDE9FE" />
+    <path d="M-10,5 L10,5 L10,10 L-10,10 Z" fill="#EDE9FE" />
+    <text x="0" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold">세무과</text>
+  </g>
+
+  <!-- 부서 - 교통행정과 -->
+  <g id="dept3" transform="translate(600, 300)" opacity="0.4">
+    <circle cx="0" cy="0" r="40" fill="#FFEDD5" />
+    <circle cx="0" cy="0" r="25" fill="#FB923C" />
+    <path d="M-15,-5 L15,-5 M-15,0 L15,0 M-15,5 L15,5" stroke="#FFEDD5" stroke-width="3" />
+    <text x="0" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold">교통행정과</text>
+  </g>
+
+  <!-- 서류 아이콘 - 1 -->
+  <g id="doc1" opacity="0" transform="translate(200, 200) scale(0.8)">
+    <rect x="-20" y="-25" width="40" height="50" rx="3" ry="3" fill="#3B82F6" />
+    <rect x="-15" y="-20" width="30" height="5" fill="white" />
+    <rect x="-15" y="-10" width="30" height="5" fill="white" />
+    <rect x="-15" y="0" width="20" height="5" fill="white" />
+    <rect x="-15" y="10" width="30" height="5" fill="white" />
+  </g>
+
+  <!-- 서류 아이콘 - 2 -->
+  <g id="doc2" opacity="0" transform="translate(300, 200) scale(0.8)">
+    <rect x="-20" y="-25" width="40" height="50" rx="3" ry="3" fill="#3B82F6" />
+    <rect x="-15" y="-20" width="30" height="5" fill="white" />
+    <rect x="-15" y="-10" width="30" height="5" fill="white" />
+    <rect x="-15" y="0" width="20" height="5" fill="white" />
+    <rect x="-15" y="10" width="30" height="5" fill="white" />
+    <circle cx="10" cy="0" r="8" fill="#ef4444" />
+    <text x="10" y="4" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="white" font-weight="bold">!</text>
+  </g>
+
+  <!-- 복사된 서류들 - 건축과 방향 -->
+  <g id="doc-to-dept1" opacity="0" transform="translate(500, 150) scale(0.7) rotate(-30)">
+    <rect x="-20" y="-25" width="40" height="50" rx="3" ry="3" fill="#3B82F6" />
+    <rect x="-15" y="-20" width="30" height="5" fill="white" />
+    <rect x="-15" y="-10" width="30" height="5" fill="white" />
+    <rect x="-15" y="0" width="20" height="5" fill="white" />
+    <rect x="-15" y="10" width="30" height="5" fill="white" />
+  </g>
+
+  <!-- 복사된 서류들 - 세무과 방향 -->
+  <g id="doc-to-dept2" opacity="0" transform="translate(550, 200) scale(0.7)">
+    <rect x="-20" y="-25" width="40" height="50" rx="3" ry="3" fill="#3B82F6" />
+    <rect x="-15" y="-20" width="30" height="5" fill="white" />
+    <rect x="-15" y="-10" width="30" height="5" fill="white" />
+    <rect x="-15" y="0" width="20" height="5" fill="white" />
+    <rect x="-15" y="10" width="30" height="5" fill="white" />
+  </g>
+
+  <!-- 복사된 서류들 - 교통행정과 방향 -->
+  <g id="doc-to-dept3" opacity="0" transform="translate(500, 250) scale(0.7) rotate(30)">
+    <rect x="-20" y="-25" width="40" height="50" rx="3" ry="3" fill="#3B82F6" />
+    <rect x="-15" y="-20" width="30" height="5" fill="white" />
+    <rect x="-15" y="-10" width="30" height="5" fill="white" />
+    <rect x="-15" y="0" width="20" height="5" fill="white" />
+    <rect x="-15" y="10" width="30" height="5" fill="white" />
+  </g>
+
+  <!-- 화살표 - 사용자 → 플랫폼 -->
+  <g id="arrow1">
+    <path d="M150,200 L350,200" stroke="#3B82F6" stroke-width="3" stroke-dasharray="10 5" stroke-dashoffset="100" stroke-linecap="round" />
+    <path id="arrow1-head" d="M340,195 L350,200 L340,205" fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0" />
+  </g>
+
+  <!-- 화살표 - 플랫폼 → 건축과 -->
+  <g id="arrow2">
+    <path d="M450,180 L550,120" stroke="#22C55E" stroke-width="3" stroke-dasharray="10 5" stroke-dashoffset="100" stroke-linecap="round" />
+    <path id="arrow2-head" d="M542,118 L550,120 L545,128" fill="none" stroke="#22C55E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0" />
+  </g>
+
+  <!-- 화살표 - 플랫폼 → 세무과 -->
+  <g id="arrow3">
+    <path d="M460,200 L650,200" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="10 5" stroke-dashoffset="100" stroke-linecap="round" />
+    <path id="arrow3-head" d="M640,195 L650,200 L640,205" fill="none" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0" />
+  </g>
+
+  <!-- 화살표 - 플랫폼 → 교통행정과 -->
+  <g id="arrow4">
+    <path d="M450,220 L550,280" stroke="#FB923C" stroke-width="3" stroke-dasharray="10 5" stroke-dashoffset="100" stroke-linecap="round" />
+    <path id="arrow4-head" d="M545,272 L550,280 L542,282" fill="none" stroke="#FB923C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0" />
+  </g>
+
+  <!-- 디지털 효과 요소들 -->
+  <g id="digital-effects" opacity="0">
+    <!-- 데이터 흐름 라인 -->
+    <path d="M400,160 Q450,100 530,120" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="5 3">
+      <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="20s" repeatCount="indefinite" />
+    </path>
+    <path d="M400,240 Q450,300 530,280" stroke="#3B82F6" stroke-width="1.5" stroke-dasharray="5 3">
+      <animate attributeName="stroke-dashoffset" from="100" to="-100" dur="20s" repeatCount="indefinite" />
+    </path>
+    
+    <!-- 플랫폼 주변 데이터 파티클 -->
+    <g id="data-particles">
+      <circle cx="400" cy="150" r="2" fill="#3B82F6">
+        <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" begin="0s" />
+      </circle>
+      <circle cx="420" cy="170" r="2" fill="#3B82F6">
+        <animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite" begin="0.2s" />
+      </circle>
+      <circle cx="380" cy="170" r="2" fill="#3B82F6">
+        <animate attributeName="opacity" values="0;1;0" dur="3.2s" repeatCount="indefinite" begin="0.7s" />
+      </circle>
+      <circle cx="410" cy="230" r="2" fill="#3B82F6">
+        <animate attributeName="opacity" values="0;1;0" dur="2.8s" repeatCount="indefinite" begin="1.1s" />
+      </circle>
+      <circle cx="390" cy="230" r="2" fill="#3B82F6">
+        <animate attributeName="opacity" values="0;1;0" dur="3.3s" repeatCount="indefinite" begin="1.5s" />
+      </circle>
+    </g>
+  </g>
+
+  <!-- 애니메이션 정의 -->
+  <defs>
+    <!-- 서류 1 움직임 애니메이션 -->
+    <animateTransform 
+      id="moveDoc1" 
+      xlink:href="#doc1"
+      attributeName="transform" 
+      type="translate" 
+      from="200,200" 
+      to="300,200" 
+      dur="1s" 
+      begin="indefinite" 
+      fill="freeze" 
+      additive="sum"
+      repeatCount="1" />
+    
+    <!-- 서류 1 표시 애니메이션 -->
+    <animate 
+      id="showDoc1" 
+      xlink:href="#doc1"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="0.5s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+    
+    <!-- 서류 2 표시 애니메이션 -->
+    <animate 
+      id="showDoc2" 
+      xlink:href="#doc2"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="0.5s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+    
+    <!-- 화살표 1 애니메이션 -->
+    <animate 
+      id="animateArrow1" 
+      xlink:href="#arrow1"
+      attributeName="stroke-dashoffset" 
+      from="100" 
+      to="0" 
+      dur="1s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+    
+    <!-- 화살표 1 head 표시 -->
+    <animate 
+      id="showArrow1Head" 
+      xlink:href="#arrow1-head"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="0.3s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <!-- 화살표 2 애니메이션 -->
+    <animate 
+      id="animateArrow2" 
+      xlink:href="#arrow2"
+      attributeName="stroke-dashoffset" 
+      from="100" 
+      to="0" 
+      dur="1s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <!-- 화살표 2 head 표시 -->
+    <animate 
+      id="showArrow2Head" 
+      xlink:href="#arrow2-head"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="0.3s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+    
+    <!-- 화살표 3 애니메이션 -->
+    <animate 
+      id="animateArrow3" 
+      xlink:href="#arrow3"
+      attributeName="stroke-dashoffset" 
+      from="100" 
+      to="0" 
+      dur="1s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <!-- 화살표 3 head 표시 -->
+    <animate 
+      id="showArrow3Head" 
+      xlink:href="#arrow3-head"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="0.3s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+    
+    <!-- 화살표 4 애니메이션 -->
+    <animate 
+      id="animateArrow4" 
+      xlink:href="#arrow4"
+      attributeName="stroke-dashoffset" 
+      from="100" 
+      to="0" 
+      dur="1s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <!-- 화살표 4 head 표시 -->
+    <animate 
+      id="showArrow4Head" 
+      xlink:href="#arrow4-head"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="0.3s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+    
+    <!-- 부서 1 활성화 애니메이션 -->
+    <animate 
+      id="activateDept1" 
+      xlink:href="#dept1"
+      attributeName="opacity" 
+      from="0.4" 
+      to="1" 
+      dur="0.5s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <!-- 부서 2 활성화 애니메이션 -->
+    <animate 
+      id="activateDept2" 
+      xlink:href="#dept2"
+      attributeName="opacity" 
+      from="0.4" 
+      to="1" 
+      dur="0.5s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <!-- 부서 3 활성화 애니메이션 -->
+    <animate 
+      id="activateDept3" 
+      xlink:href="#dept3"
+      attributeName="opacity" 
+      from="0.4" 
+      to="1" 
+      dur="0.5s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <!-- 부서 1로 가는 서류 표시 및 이동 -->
+    <animate 
+      id="showDocToDept1" 
+      xlink:href="#doc-to-dept1"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="0.5s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <animateTransform 
+      id="moveDocToDept1" 
+      xlink:href="#doc-to-dept1"
+      attributeName="transform" 
+      type="translate" 
+      from="500,150" 
+      to="580,120" 
+      dur="1s" 
+      begin="indefinite" 
+      fill="freeze" 
+      additive="sum"
+      repeatCount="1" />
+      
+    <!-- 부서 2로 가는 서류 표시 및 이동 -->
+    <animate 
+      id="showDocToDept2" 
+      xlink:href="#doc-to-dept2"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="0.5s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <animateTransform 
+      id="moveDocToDept2" 
+      xlink:href="#doc-to-dept2"
+      attributeName="transform" 
+      type="translate" 
+      from="550,200" 
+      to="650,200" 
+      dur="1s" 
+      begin="indefinite" 
+      fill="freeze" 
+      additive="sum"
+      repeatCount="1" />
+      
+    <!-- 부서 3로 가는 서류 표시 및 이동 -->
+    <animate 
+      id="showDocToDept3" 
+      xlink:href="#doc-to-dept3"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="0.5s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+      
+    <animateTransform 
+      id="moveDocToDept3" 
+      xlink:href="#doc-to-dept3"
+      attributeName="transform" 
+      type="translate" 
+      from="500,250" 
+      to="580,280" 
+      dur="1s" 
+      begin="indefinite" 
+      fill="freeze" 
+      additive="sum"
+      repeatCount="1" />
+      
+    <!-- 디지털 효과 표시 -->
+    <animate 
+      id="showDigitalEffects" 
+      xlink:href="#digital-effects"
+      attributeName="opacity" 
+      from="0" 
+      to="1" 
+      dur="1s" 
+      begin="indefinite" 
+      fill="freeze" 
+      repeatCount="1" />
+  </defs>
+  
+  <!-- 스크립트 영역 -->
+  <script type="text/ecmascript"><![CDATA[
+    function startAnimation() {
+      // 초기 상태로 리셋
+      resetAnimation();
+      
+      // 서류 1 표시
+      setTimeout(function() {
+        document.getElementById('showDoc1').beginElement();
+      }, 500);
+      
+      // 화살표 1 시작
+      setTimeout(function() {
+        document.getElementById('animateArrow1').beginElement();
+      }, 1000);
+      
+      // 화살표 1 헤드 표시
+      setTimeout(function() {
+        document.getElementById('showArrow1Head').beginElement();
+      }, 2000);
+      
+      // 서류 1 이동 및 서류 2 표시
+      setTimeout(function() {
+        document.getElementById('moveDoc1').beginElement();
+        document.getElementById('showDoc2').beginElement();
+      }, 2500);
+      
+      // 디지털 효과 표시
+      setTimeout(function() {
+        document.getElementById('showDigitalEffects').beginElement();
+      }, 3000);
+      
+      // 화살표 2 시작, 부서 1 서류 표시
+      setTimeout(function() {
+        document.getElementById('animateArrow2').beginElement();
+        document.getElementById('showDocToDept1').beginElement();
+      }, 3500);
+      
+      // 화살표 2 헤드 표시, 부서 1 서류 이동
+      setTimeout(function() {
+        document.getElementById('showArrow2Head').beginElement();
+        document.getElementById('moveDocToDept1').beginElement();
+      }, 4000);
+      
+      // 부서 1 활성화
+      setTimeout(function() {
+        document.getElementById('activateDept1').beginElement();
+      }, 4500);
+      
+      // 화살표 3 시작, 부서 2 서류 표시
+      setTimeout(function() {
+        document.getElementById('animateArrow3').beginElement();
+        document.getElementById('showDocToDept2').beginElement();
+      }, 5000);
+      
+      // 화살표 3 헤드 표시, 부서 2 서류 이동
+      setTimeout(function() {
+        document.getElementById('showArrow3Head').beginElement();
+        document.getElementById('moveDocToDept2').beginElement();
+      }, 5500);
+      
+      // 부서 2 활성화
+      setTimeout(function() {
+        document.getElementById('activateDept2').beginElement();
+      }, 6000);
+      
+      // 화살표 4 시작, 부서 3 서류 표시
+      setTimeout(function() {
+        document.getElementById('animateArrow4').beginElement();
+        document.getElementById('showDocToDept3').beginElement();
+      }, 6500);
+      
+      // 화살표 4 헤드 표시, 부서 3 서류 이동
+      setTimeout(function() {
+        document.getElementById('showArrow4Head').beginElement();
+        document.getElementById('moveDocToDept3').beginElement();
+      }, 7000);
+      
+      // 부서 3 활성화
+      setTimeout(function() {
+        document.getElementById('activateDept3').beginElement();
+      }, 7500);
+    }
+    
+    function resetAnimation() {
+      // 모든 요소를 초기 상태로 재설정
+      var elements = [
+        "#doc1", "#doc2", 
+        "#doc-to-dept1", "#doc-to-dept2", "#doc-to-dept3",
+        "#arrow1-head", "#arrow2-head", "#arrow3-head", "#arrow4-head", 
+        "#digital-effects"
+      ];
+      
+      elements.forEach(function(id) {
+        var element = document.querySelector(id);
+        if (element) {
+          element.setAttribute("opacity", "0");
+        }
+      });
+      
+      // 화살표 대시 오프셋 재설정
+      var arrows = ["#arrow1", "#arrow2", "#arrow3", "#arrow4"];
+      arrows.forEach(function(id) {
+        var arrow = document.querySelector(id + " path");
+        if (arrow) {
+          arrow.setAttribute("stroke-dashoffset", "100");
+        }
+      });
+      
+      // 부서 투명도 재설정
+      var depts = ["#dept1", "#dept2", "#dept3"];
+      depts.forEach(function(id) {
+        var dept = document.querySelector(id);
+        if (dept) {
+          dept.setAttribute("opacity", "0.4");
+        }
+      });
+      
+      // 서류 위치 재설정
+      document.querySelector("#doc1").setAttribute("transform", "translate(200, 200) scale(0.8)");
+      document.querySelector("#doc-to-dept1").setAttribute("transform", "translate(500, 150) scale(0.7) rotate(-30)");
+      document.querySelector("#doc-to-dept2").setAttribute("transform", "translate(550, 200) scale(0.7)");
+      document.querySelector("#doc-to-dept3").setAttribute("transform", "translate(500, 250) scale(0.7) rotate(30)");
+    }
+    
+    // 외부에서 호출할 수 있는 함수
+    window.playDocAnimation = startAnimation;
+    
+    // 초기 로드 시 자동 재생하지 않음
+    // 대신 외부 버튼 클릭으로 실행
+  ]]></script>
+</svg>
